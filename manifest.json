@@ -1,0 +1,21 @@
+{
+	"manifest_version": 2,
+	"name": "y-translate3",
+	"version": "0.1b",
+
+	"background": {
+    	"page": "main.html"
+  	},
+  	"content_scripts": [
+	    {
+	      // "exclude_matches": ["*://developer.mozilla.org/*"],
+	      "matches": ["<all_urls>"],
+	      "js": ["CONST.js", "ytranslate3.js", "invokeLimiter.js", "page_interface.js"]
+	    }
+  	],
+  	"permissions": [
+  		 "<all_urls>"
+  		//"activeTab",
+  		//"tabs"
+  	]
+}
