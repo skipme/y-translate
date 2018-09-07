@@ -1,0 +1,61 @@
+{
+  "translateEvtType_options.Cursor hover on the text": {
+    "message": "Наведение на текст"
+  },
+  "translateEvtType_options.Hit keyboard key": {
+    "message": "Нажатие клавиши"
+  },
+  "translateEvtType_title": {
+    "message": "Вызов плитки перевода"
+  },
+  "translateEvtKeybrd_title": {
+    "message": "Клавиша"
+  },
+  "translateLNG_PREFER_TO_title": {
+    "message": "Переводить на"
+  },
+
+
+
+  "wdg_status": {
+    "message": "Статус"
+  },
+  "wdg_stateOn": {
+    "message": "вкл"
+  },
+  "wdg_FROM_LNG": {
+    "message": "Язык содержания cайта"
+  },
+  "wdg_unavailable": {
+    "message": "недоступно"
+  },
+  "wdg_remark": {
+    "message": "Язык содержания cайта"
+  },
+  "wdg_stateOff": {
+    "message": "откл"
+  },
+
+  "gem_en": {
+    "message": "Английский"
+  },
+  "gem_ru": {
+    "message": "Русский"
+  },
+  "gem_de": {
+    "message": "Немецкий"
+  },
+  "gem_auto": {
+    "message": "Определять автоматически"
+  },
+  "gem_es": {
+    "message": "Испанский"
+  },
+  "gem_fr": {
+    "message": "Французский"
+  },
+  "gem_it": {
+    "message": "Итальянский"
+  }
+  
+}

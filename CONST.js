@@ -15,4 +15,17 @@ window.CONST =
 	ACTION_B_translate: 11,
 	ACTION_B_cfgSet: 12,
 	ACTION_B_translatec: 13,
+
+	ACTION_B_locData: 14,
+	ACTION_B_openConfApp: 15,
+	ACTION_B_openApp: 16,
+	ACTION_B_disableUrl: 17,
+	ACTION_B_setLngFrom: 18,
+
+	ACTION_B_BEEPW: 19,
+
+	ACTION_W_state: 20,
+	ACTION_W_locStrings: 21,
+	ACTION_W_locLangs: 22,
+	ACTION_W_state: 23
 };

@@ -1,21 +1,34 @@
 {
 	"manifest_version": 2,
 	"name": "y-translate3",
-	"version": "0.1b",
+	"version": "0.2.1",
+	"author": "Vitaliy (cerriun@gmail.com)",
+	
+	"default_locale": "ru",
 
 	"background": {
     	"page": "main.html"
   	},
+
+  	"browser_action": {
+			"browser_style": true,
+			"default_icon": {
+			"32": "icon.png",
+			"64": "icon64.png"
+		},
+		"default_popup": "action.html",
+		"default_title": "y-Translate3"
+	}, 
   	"content_scripts": [
 	    {
-	      // "exclude_matches": ["*://developer.mozilla.org/*"],
+	      // "exclude_matches": ["moz-extension://*"],
 	      "matches": ["<all_urls>"],
 	      "js": ["CONST.js", "ytranslate3.js", "invokeLimiter.js", "page_interface.js"]
 	    }
   	],
   	"permissions": [
-  		 "<all_urls>"
+  		 "<all_urls>",
   		//"activeTab",
-  		//"tabs"
+  		"tabs"
   	]
 }

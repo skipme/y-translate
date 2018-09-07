@@ -1,0 +1,92 @@
+#leftslash{
+    width: 140px !important;
+    top: 44px;
+}
+#toppanel
+{
+
+    left: 0px !important;
+    height: 44px;
+}
+.workzone
+{
+    left: 140px;
+}
+.fc-group .toggle
+{
+    cursor: pointer;
+}
+.fc-group
+{
+    display:block;
+    clear:both;
+    float:left;
+    padding: 0;
+    margin: 00px 0px 00px 50px;
+    height: auto; 
+    -moz-transition: color 0.2s ease-out;
+}
+.fc-group.hidden
+{
+    color: lightgray;
+    height: 16pt;
+    overflow: hidden;
+}
+.fc-group.hidden input
+{
+    -moz-user-select: none;
+    color: gray;
+}
+.fc-controls{
+    display: block;
+    left: 160px;
+}
+.ptoggle
+{
+    /*display:inline-block;*/
+    clear:both;
+    /*float:left;*/
+    padding: 0;
+    margin: 1pt;
+}
+.ptoggle-active
+{
+    border-bottom: 1px dashed black;
+}
+.ptoggle a
+{
+    float: right;
+}
+*
+{
+    font-family: PT Sans, verdana;
+    font-size: 11pt;
+}
+.hinfo
+{
+    font-size: 10pt;
+    color: gray;
+ 
+    opacity: 0;
+    /*visibility: hidden;*/
+    animation: blink 1s steps(10, start) infinite;
+    -moz-transition: opacity 0.4s ease-out;
+
+}
+.hinfo.hinfo-show
+{
+    opacity: 1;
+    visibility: visible;
+}
+@keyframes blink {
+  to {
+    color: rgb(120,120,240);
+    text-decoration: underline;
+  }
+}
+.fc-hl{
+    height: 12px;
+    border-bottom: 1px solid gray;
+    width: 80%;
+    margin-bottom: 4px;
+}

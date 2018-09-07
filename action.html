@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>YTRPAN</title>
+  <meta http-equiv=Content-Type content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="./css/symbols.css">
+    <link rel="stylesheet" href="./css/animation.css">
+		<style type="text/css" media="all">
+            body {            	   
+               color: black;
+               font-family: verdana;
+               font-size: 12pt;
+               padding: 6;
+               padding-top: 0;
+               margin: 0;
+               -moz-user-select: none;
+            }
+           
+            a { text-decoration: none;  }
+
+            a:hover { text-decoration: underline; cursor: pointer; }
+            span { display: inline-block; width: 100%; text-align: center; }
+            #tn { /*background-color: #f0f0f0;*/ border-bottom: 2px solid #223355 ;}
+            .ison{background-color: rgb(137, 255, 167); -moz-transition: background-color 0.3s ease-out;}
+            .isoff{background-color: #f0f0f0; -moz-transition: background-color 0.3s ease-out;}
+
+            .remark { color: #747377; font-size: 8pt; text-align: left; }
+
+            .select-style {
+                border: 1px solid #f0f0f0;
+                width: 90pt;
+                border-radius: 3px;
+                overflow: hidden;
+                -moz-transition: background-color 0.3s ease-out;
+                margin: 0 auto;
+            }
+            .select-style:hover select {
+              background-color: rgb(242, 255, 251); -moz-transition: background-color 0.3s ease-out;
+             
+            }
+            .select-style select {
+                padding: 5px 8px;
+                width: 130%;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+                background-image: none;
+                cursor: pointer;
+            }
+
+            .select-style select:focus {
+                outline: none;
+            }
+            .ico-acts{
+              color: #000;
+              text-decoration: none;
+              cursor: default;
+            }
+            .ico-acts a:hover{
+              color: rgb(25, 101, 144);
+            }
+        </style>
+</head>
+
+<body>
+	<div style="padding: 0;">
+		<p>
+	        <span id="tn" class="ison"><label class="remark" id="p-url">---</label> - [<a id="p-change" class="on"></a>]</span>
+	    </p>
+        <label data-l10n-id="wdg_FROM_LNG" style="font-size: 10pt; color: #223355; padding: 4px;" id="l-titlelng">site lng:</label>
+        <div class="select-style">
+          <div style="position:relative">
+            <select id="LNG_FROM"><option>Ru</option><option>En</option></select>
+            <div style="position:absolute;top:0;right:0;-moz-user-select: none;pointer-events:none; z-index:21">
+            <a><i class="icon-angle-double-down"></i></a></div><!--🔽 --><!-- icon-angle-double-down --><!-- icon-angle-double-down -->
+          </div>
+        </div>
+        <div class="ico-acts"  style="text-align:center">
+        <a id="openapp"><i title="Application" class="icon-language-1"></i></a>
+        <a id="configure"><i title="Configuration" class="icon-cog-1"></i></a>
+        </div>
+	 </div>
+   <script type="text/javascript" src="./CONST.js"></script>
+   <script type="text/javascript" src="./ytranslate3.js"></script>
+   <script type="text/javascript" src="./incAction.js"></script>
+</body>
+
+</html>
