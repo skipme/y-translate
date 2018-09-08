@@ -1,27 +1,14 @@
 var dispatch_book = [];
 var port_connected = false;
 
-function connected(number_eventId) 
+async function connected(number_eventId) 
 {
 	number_eventId = number_eventId | CONST.ACTION_B_BEEP;
 
-	var ret_msg = browser.runtime.sendMessage({action: number_eventId});
-	if(ret_msg)
-	{
-		ret_msg.then(
-			function(message)
-			{
-				console.log("con callback", message)
-				port_connected = true;
-				got_message(message);	
-			},
-			function(err)
-			{
-				console.log("con err", err)
-				setTimeout(function(){connected(number_eventId);}, Math.random()*2000+500);
-			}
-		);
-	}
+	var ret_msg = await browser.runtime.sendMessage({action: number_eventId});
+	let message = ret_msg;
+	port_connected = true;
+	got_message(message);	
 }
 function got_message(message)
 {

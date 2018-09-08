@@ -18,7 +18,7 @@ var preferences =
 	temp_host_params: null,
 	settings: null,
 
-	read_model: function(function_callback)
+	read_model: async function(function_callback)
 	{
 		var that = this;
 
@@ -27,23 +27,22 @@ var preferences =
 		this.host_params = {_ytranslate_host_: {}};
 		this.temp_host_params = {_ytranslate_host_: {}};
 
-		that.read("HostUrls", function(data){
+		var data = await that.readAsync("HostUrls");
+		if(data === undefined || data.length === undefined)
+			data = undefined;
+		else
+			that.hosts = data;
 
-			if(data === undefined || data.length === undefined)
-				data = undefined;
-			else
-				that.hosts = data;
+		console.log("hp", that.hosts);
+		
+		data = await that.readAsync("HostPrefs");
 
-			that.read("HostPrefs", function(data){
-				console.log("hpr", data)
-				if(data === undefined || data._ytranslate_host_ === undefined)
-					data = undefined;
-				else
-					that.host_params = data;
-				console.log("hp", that.host_params)
-				function_callback();
-			});
-		});
+		if(data === undefined || data._ytranslate_host_ === undefined)
+			data = undefined;
+		else
+			that.host_params = data;
+
+		console.log("hp", that.host_params)
 	},
 
 	storage_error_callback: function(err)
@@ -62,6 +61,22 @@ var preferences =
 					function_callback(object_data[string_key]);
 			}, 
 			this.storage_error_callback);
+	},
+	readAsync: function (string_key) 
+	{
+		return new Promise(resolve => {
+			let gettingItem = browser.storage.local.get(string_key);
+			gettingItem.then(
+				function(object_data)
+				{
+					if(object_data === undefined || object_data[string_key] === undefined)
+						resolve(undefined);
+					else	
+						resolve(object_data[string_key]);
+				}, 
+				this.storage_error_callback);
+	  	});
+		
 	},
 	write: function (string_key, object_data) 
 	{

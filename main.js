@@ -191,6 +191,9 @@ function localiseArray(array)
 function getHostName(url, bool_include_protocol)
 {
    var arr = url.split("/");
+   if(arr.length < 3)
+   	return url;
+   
    var result = (bool_include_protocol ? (arr[0] + "//") : "") + arr[2];
    return result;
 }

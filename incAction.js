@@ -1,5 +1,5 @@
 // (function(){
-	port_connected = true;
+	// port_connected = true;
 	
 	function escapeHTML(str) 
 	{
@@ -116,9 +116,13 @@
 	});
 
 	//
-	connected(CONST.ACTION_B_BEEPW);
+	async function con_port()
+	{
+		await connected(CONST.ACTION_B_BEEPW);
+		emit(CONST.ACTION_B_locData, locStrings);
+	}
+	con_port()
 
-	emit(CONST.ACTION_B_locData, locStrings);
 	elemOpenApp.addEventListener("click", function(){
 		self.port.emit("openApp", {});
 	});
