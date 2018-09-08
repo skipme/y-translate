@@ -1,4 +1,13 @@
 
+// if(typeof browser === "undefined")
+// {
+// 	window.browser = chrome;
+// }
+preferences.read_model(function()
+{
+
+});
+
 var parameters = {LNG_TO: 'ru', LNG_TO_ALT: "en" };
 var currentTab;
 
@@ -7,13 +16,24 @@ function communication_gate(object_message, sender, sendResponse)
 	switch(object_message.action)
 	{
 		case CONST.ACTION_B_BEEP:
-			// console.log("action beep from main.js "+sender.tab.id);
+			console.log("action beep from main.js "+sender.tab.id);
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_BEEP});
 
 
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Prefs, args: [prefs]});
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Urls, args: [{ajax_loader: browser.runtime.getURL("ajax-loader.gif")}]});
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_enable, args: []});
+		break;
+		case CONST.ACTION_B_page_lng:
+			console.log("action page_lng from main.js "+sender.tab.id);
+			var url___ = getHostName(sender.tab.url, true);
+			var lng___ = object_message.args[1];
+			var props___ = preferences.getHostPrefs(url___);
+		    if(props___.page_lng !== lng___)
+          	{	
+          		props___.page_lng = lng___;
+          		preferences.setHostPrefs_temp(url___, props___);
+          	}
 		break;
 		case CONST.ACTION_B_scoped:
 			translate(sender.tab.id, "auto", object_message.args[1]); 
@@ -23,9 +43,36 @@ function communication_gate(object_message, sender, sendResponse)
 			sendResponse({action: CONST.ACTION_W_locLangs, args: [getLocalisedLangs()]});
 		break;
 		case CONST.ACTION_B_locData:
+				var	url___ = getHostName(currentTab.url, true);
 				sendResponse([
 				{action: CONST.ACTION_W_locStrings, args: [localiseArray(object_message.args[1])]},
-				{action: CONST.ACTION_W_state, args: [{isin: true, url: currentTab.url, prefs: {}}]}
+				{action: CONST.ACTION_W_state, args: [{isin: preferences.isHostIn(url___), url: url___, prefs: preferences.getHostPrefs(url___)}]}
+				]);
+		break;
+		case CONST.ACTION_B_disableUrl:
+			var url___ = object_message.args[1].url;
+			var isin = preferences.isHostIn(url___);
+			if(isin)
+			{
+				preferences.dropHostUrl(url___);
+			}
+			else
+			{
+				preferences.pushHostUrl(url___);
+			}
+			sendResponse([
+				{action: CONST.ACTION_W_state, args: [{isin: !isin, url: url___, prefs: preferences.getHostPrefs(url___)}]}
+				]);
+		break;
+		case CONST.ACTION_B_setLngFrom:
+			var url___ = object_message.args[1].url;
+			var LNG_FROM___ = object_message.args[1].LNG_FROM;
+			var __prefs = preferences.getHostPrefs(url___);
+			__prefs.LNG_FROM = LNG_FROM___;
+			preferences.setHostPrefs(url___, __prefs);
+			var isin = preferences.isHostIn(url___);
+			sendResponse([
+				{action: CONST.ACTION_W_state, args: [{isin: isin, url: url___, prefs: __prefs}]}
 				]);
 		break;
 		default:
@@ -140,4 +187,10 @@ function localiseArray(array)
   };
 
   return result;
+}
+function getHostName(url, bool_include_protocol)
+{
+   var arr = url.split("/");
+   var result = (bool_include_protocol ? (arr[0] + "//") : "") + arr[2];
+   return result;
 }

@@ -1,10 +1,8 @@
 var dispatch_book = [];
-var port_connected = true;
+var port_connected = false;
 
 function connected(number_eventId) 
 {
-	console.log("page interface", window.document.location)
-
 	number_eventId = number_eventId | CONST.ACTION_B_BEEP;
 
 	var ret_msg = browser.runtime.sendMessage({action: number_eventId});
@@ -58,6 +56,7 @@ function emit()
 	var number_eventId = arguments[0];
 	if(port_connected)
 	{
+		console.log("emmision", dargs)
 		var ret_msg = browser.runtime.sendMessage({action: number_eventId, args: dargs});
 		ret_msg.then(
 			function(message)
@@ -75,6 +74,7 @@ function emit()
 	}
 	else
 	{	
+		console.log("deferred emmision", dargs)
 		setTimeout(function(){
 			// browser.runtime.sendMessage({action: number_eventId, args: dargs});
 			emit.apply(window, dargs);

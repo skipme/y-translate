@@ -1,8 +1,8 @@
 {
-  "translateEvtType_options.Cursor hover on the text": {
+  "translateEvtType_options_Cursor_hover_on_the_text": {
     "message": "Наведение на текст"
   },
-  "translateEvtType_options.Hit keyboard key": {
+  "translateEvtType_options_Hit_keyboard_key": {
     "message": "Нажатие клавиши"
   },
   "translateEvtType_title": {

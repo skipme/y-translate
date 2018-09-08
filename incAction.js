@@ -1,5 +1,6 @@
 // (function(){
-
+	port_connected = true;
+	
 	function escapeHTML(str) 
 	{
 		return str.replace(/[&"<>]/g, function (m){ return escapeHTML.replacements[m];});
@@ -47,10 +48,11 @@
 			elemActionChangeStatus.style.display = "none";
 			elemLNG_FROM.setAttribute("disabled", "disabled");
 		}else{
-			url = getHostName(url, true);
+			// url = getHostName(url, true);
 			elemActionChangeStatus.style.removeProperty("display");
 			elemLNG_FROM.removeAttribute("disabled");
 		}
+
 		elemUrl.textContent = escapeHTML(url);
 	});
     function getHostName(url, hostOnly)// returns [protocol://(hostOnly??)]host
@@ -91,7 +93,11 @@
 			    	selected = WState.prefs.page_lng == d.val;
 			}
 
-		    elemLNG_FROM.options.add(new Option(d.name, d.val, selected))
+ 			var opt2 = document.createElement("option");
+ 			opt2.value = d.val;
+ 			opt2.text = d.name;
+ 			opt2.selected = selected?"selected":"";
+		    elemLNG_FROM.options.add(opt2);
 		}
 	}
 	// ui
