@@ -5,7 +5,7 @@ async function connected(number_eventId)
 {
 	number_eventId = number_eventId | CONST.ACTION_B_BEEP;
 
-	var ret_msg = browser.runtime.sendMessage({action: number_eventId});
+	let ret_msg = browser.runtime.sendMessage({action: number_eventId});
 	return new Promise(resolve => {
 		ret_msg.then(
 				function(message)
@@ -17,9 +17,10 @@ async function connected(number_eventId)
 				},
 				function(err)
 				{
+					console.log("con err", err)
 					setTimeout(function(){
 						connected(number_eventId);
-					}, Math.random()*2000+500);
+					}, Math.random()*500);
 				}
 			);
 	});
@@ -89,7 +90,7 @@ function communication_gate(object_message)
 		default:
 			var function_endpoint;
 			if((function_endpoint = dispatch_book[object_message.action]) === undefined)
-			{	console.log("unknown action ytranslate3.js: ", object_message.action);
+			{	console.log("unknown action ytranslate3.js: ", object_message.action, document.location);
 			}
 			else
 			{

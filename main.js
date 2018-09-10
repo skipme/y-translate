@@ -13,19 +13,24 @@ var currentTab;
 
 var book_url_tabId = {};
 var book_tabId_url = [];
+var list_connected_tabs = [];
 function set_url_tabid(string_url, number_tabId)
 {
 	remove_tabid(number_tabId);
+
+	if(list_connected_tabs.indexOf(number_tabId) < 0)
+		list_connected_tabs.push(number_tabId);
+
 	book_tabId_url[number_tabId] = string_url;
 
 	var ref_url_ = book_url_tabId[string_url];
 	if(ref_url_ !== undefined)
 	{
-		ref_url_.push(number_tabId);
+		ref_url_.tabs.push(number_tabId);
 	}
 	else
 	{
-		book_url_tabId[string_url] = [number_tabId];
+		book_url_tabId[string_url] = {tabs: [number_tabId], prefs: preferences.getHostPrefs(string_url)};
 	}
 }
 function remove_tabid(number_tabId)
@@ -34,17 +39,19 @@ function remove_tabid(number_tabId)
 	if(ref_tabid_ !== undefined)
 	{
 		var prev_url_ = book_tabId_url[number_tabId];
-		var remat_ = book_url_tabId[prev_url_].indexOf(number_tabId);
-		book_url_tabId[prev_url_].splice(remat_, 1);
-		if(book_url_tabId[prev_url_].length === 0)
+		var remat_ = book_url_tabId[prev_url_].tabs.indexOf(number_tabId);
+		book_url_tabId[prev_url_].tabs.splice(remat_, 1);
+		if(book_url_tabId[prev_url_].tabs.length === 0)
 		{
 			delete book_url_tabId[prev_url_];
 		}
 	}
+	if((ref_tabid_ = list_connected_tabs.indexOf(number_tabId)) >= 0)
+		list_connected_tabs.splice(ref_tabid_, 1);
 }
 function get_url_tabIds(string_url)
 {
-	return book_url_tabId[string_url];
+	return book_url_tabId[string_url].tabs;
 }
 
 function communication_gate(object_message, sender, sendResponse) 
@@ -53,29 +60,39 @@ function communication_gate(object_message, sender, sendResponse)
 	{
 		case CONST.ACTION_B_BEEP:
 
-			console.log("action beep from main.js "+sender.tab.id);
+			// console.log("action beep from main.js "+sender.tab.id);
 
 			set_url_tabid(getHostName(sender.tab.url, true), sender.tab.id);
 
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_BEEP});
 
-			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Prefs, args: [prefs]});
+			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Prefs, args: [preferences.getPrefs()]});
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Urls, args: [{ajax_loader: browser.runtime.getURL("ajax-loader.gif")}]});
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_enable, args: []});
 		break;
 		case CONST.ACTION_B_page_lng:
-			console.log("action page_lng from main.js "+sender.tab.id);
+			// console.log("action page_lng from main.js "+sender.tab.id);
 			var url___ = getHostName(sender.tab.url, true);
 			var lng___ = object_message.args[1];
 			var props___ = preferences.getHostPrefs(url___);
-		    if(props___.page_lng !== lng___)
+		    if(props___.page_lng === undefined || props___.page_lng !== lng___)
           	{	
           		props___.page_lng = lng___;
           		preferences.setHostPrefs_temp(url___, props___);
           	}
 		break;
 		case CONST.ACTION_B_scoped:
-			translate(sender.tab.id, "auto", object_message.args[1]); 
+			var url___ = getHostName(sender.tab.url, true);
+			var prefs__ = book_url_tabId[url___].prefs;
+			var lang_from_ = prefs__.LNG_FROM;
+
+			if(lang_from_ === undefined)
+				lang_from_ = prefs__.page_lng;
+
+			if(lang_from_ === undefined)
+				lang_from_ = "auto";
+
+			translate(sender.tab.id, lang_from_, object_message.args[1]); 
 		break;
 		// widget dont have fixed port hahdle so we can only answer to it
 		case CONST.ACTION_B_BEEPW:
@@ -122,12 +139,40 @@ function communication_gate(object_message, sender, sendResponse)
 			var url___ = object_message.args[1].url;
 			var LNG_FROM___ = object_message.args[1].LNG_FROM;
 			var __prefs = preferences.getHostPrefs(url___);
+			
 			__prefs.LNG_FROM = LNG_FROM___;
+			book_url_tabId[url___].prefs.LNG_FROM = LNG_FROM___;
+
 			preferences.setHostPrefs(url___, __prefs);
 			var isin = preferences.isHostIn(url___);
 			sendResponse([
 				{action: CONST.ACTION_W_state, args: [{isin: isin, url: url___, prefs: __prefs}]}
 				]);
+		break;
+		case CONST.ACTION_B_openConfApp:
+
+			  var creating = browser.tabs.create({
+			    url: browser.runtime.getURL("configure.html")
+			  });
+			  creating.then(function(tab){
+
+			  }, function(){});
+		break;
+		case CONST.ACTION_B_cfgSet:
+			var _prefs_ = object_message.args[1];
+			preferences.setPrefs(_prefs_);
+
+			// for(var t in list_connected_tabs)
+			for (var i = 0; i < list_connected_tabs.length; i++)
+			{
+				var t = list_connected_tabs[i];
+				var sent = browser.tabs.sendMessage(t, {action: CONST.ACTION_F_Prefs, args: [_prefs_]});
+				
+				let tabid = t;
+				sent.catch(function(err){
+					remove_tabid(tabid);
+				});
+			}
 		break;
 		default:
 			console.log("unknown action main.js: ", object_message);

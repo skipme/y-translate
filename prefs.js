@@ -1,4 +1,4 @@
-var prefs = {
+var _def_prefs_ = {
 		translateEvtType: "h", 
 		translateEvtKeybrd: "ctrl", 
 		cpyClipboardEvtKeybrd: "ignore", 
@@ -16,14 +16,14 @@ var preferences =
 	hosts: undefined,
 	host_params: null,
 	temp_host_params: null,
-	settings: null,
+	extension_prefs: null,
 
 	read_model: async function(function_callback)
 	{
 		var that = this;
 
 		this.hosts = [];
-		this.settings = {};
+		this.extension_prefs = {};
 		this.host_params = {_ytranslate_host_: {}};
 		this.temp_host_params = {_ytranslate_host_: {}};
 
@@ -43,6 +43,15 @@ var preferences =
 			that.host_params = data;
 
 		console.log("hp", that.host_params)
+
+		data = await that.readAsync("ExtensionPrefs");
+
+		if(data === undefined || data._ytranslate_ === undefined)
+			data = _def_prefs_;
+		
+		this.extension_prefs = data;
+
+		console.log("ep", that.extension_prefs)
 	},
 
 	storage_error_callback: function(err)
@@ -125,4 +134,14 @@ var preferences =
 	{		
 		this.temp_host_params[url] = obj;	
 	},
+	getPrefs: function()
+	{
+		return this.extension_prefs;
+	},
+	setPrefs: function(prefs)
+	{
+		prefs._ytranslate_ = "0.4";
+		this.extension_prefs = prefs;
+		this.write("ExtensionPrefs", this.extension_prefs);
+	}
 }; 

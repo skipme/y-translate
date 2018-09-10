@@ -659,8 +659,10 @@
 		}
 		function integrateCfg(to)
 		{
-			exportFunction(cfgGet, to, {defineAs: "cfgGet"});
-			exportFunction(cfgSet, to, {defineAs: "cfgSet"});
+			// exportFunction(cfgGet, to, {defineAs: "cfgGet"});
+			// exportFunction(cfgSet, to, {defineAs: "cfgSet"});
+			to.cfgGet = cfgGet;
+			to.cfgSet = cfgSet;
 
 			to.connect(to.cfgGet, to.cfgSet);
 		}
@@ -695,25 +697,28 @@
 		}
 
 		// y-translate app
-		if(document.location.origin === "resource://y-translate" && unsafeWindow["p2ptranslate"] !== undefined)
+		if(document.location.origin === "resource://y-translate" && wrappedJSObject["p2ptranslate"] !== undefined)
 		{
 			
-			if(unsafeWindow.p2ptranslate.imachine !== undefined)
+			if(wrappedJSObject.p2ptranslate.imachine !== undefined)
 			{
-				integrate(unsafeWindow.p2ptranslate.imachine);	
+				integrate(wrappedJSObject.p2ptranslate.imachine);	
 			}else{
-				exportFunction(integrate, unsafeWindow.p2ptranslate, {defineAs: "imachine"});
+				exportFunction(integrate, wrappedJSObject.p2ptranslate, {defineAs: "imachine"});
 			}
 			// return;
 		}
 		// y-translate cfg
-		if(document.location.origin === "resource://y-translate-cfg" && unsafeWindow["p2ptranslate"] !== undefined)
+
+		if(document.location.href === browser.runtime.getURL("configure.html") && window["p2ptranslate"] !== undefined)
 		{
-			if(unsafeWindow.p2ptranslate.connect !== undefined)
+			
+			if(window.p2ptranslate.connect !== undefined)
 			{
-				integrateCfg(unsafeWindow.p2ptranslate);	
+				integrateCfg(window.p2ptranslate);	
+
 			}else{
-				exportFunction(integrateCfg, unsafeWindow.p2ptranslate, {defineAs: "cfgGet"});
+				exportFunction(integrateCfg, window.p2ptranslate, {defineAs: "cfgGet"});
 			}
 			// return;
 		}

@@ -2,13 +2,26 @@
 	"manifest_version": 2,
 	"name": "y-translate3",
 	"version": "0.4.3",
+
 	"author": "Vitaliy (cerriun@gmail.com)",
-	
+	"developer": {
+	  "name": "Vitaliy",
+	  "url": "https://github.com/skipme"
+	},
+
 	"default_locale": "ru",
+	"icons": {
+	  "32": "icon.png",
+	  "64": "icon64.png"
+	},
 
 	"background": {
     	"page": "main.html"
   	},
+
+	"options_ui": {
+	  "page": "configure.html"
+	},
 
   	"browser_action": {
 			"browser_style": true,
@@ -19,7 +32,7 @@
 		"default_popup": "action.html",
 		"default_title": "y-Translate3"
 	}, 
-	"web_accessible_resources": ["ajax-loader.gif"],
+	"web_accessible_resources": ["ajax-loader.gif", "configure.html"],
   	"content_scripts": [
 	    {
 	      // "exclude_matches": ["moz-extension://*"],

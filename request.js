@@ -40,7 +40,7 @@ function request(succ, err, data, url)
         // request.setRequestHeader('X-PINGOTHER', 'pingpong');
     // request.setRequestHeader('Content-Type', 'application/json');
     // request.send(JSON.stringify(data));
-    request.setRequestHeader('X-PINGOTHER', 'pingpong');
+    // request.setRequestHeader('X-PINGOTHER', 'pingpong');
     request.send();
     // }
 }

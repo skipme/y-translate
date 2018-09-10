@@ -43,7 +43,7 @@
 		disabled = false;
 		populateLangs(lang_list);
 		var url = _state.url;
-		if(url.indexOf("about:") === 0 || (url.indexOf("resource:") === 0 && url.indexOf("/y-translate")<0))
+		if(url.indexOf("about:") === 0 || (url.indexOf("resource:") === 0 || url.indexOf("moz-extension://") === 0))
 		{
 			url = localisedStrings["wdg_unavailable"];
 			elemActionChangeStatus.style.display = "none";
@@ -82,7 +82,7 @@
 	function populateLangs(list){
 		elemLNG_FROM.options.length = 0; // clear out existing items
 
-		var use_lngfrom = WState !== null && WState.prefs !== null && WState.prefs.LNG_FROM !== null && typeof WState.prefs.LNG_FROM !== 'undefined';
+		var use_lngfrom = WState !== null && WState.prefs !== null && typeof WState.prefs.LNG_FROM !== 'undefined';
 
 		for(var i=0; i < list.length; i++) {
 		    var d = list[i];
