@@ -19,10 +19,6 @@
     	"page": "main.html"
   	},
 
-	"options_ui": {
-	  "page": "configure.html"
-	},
-
   	"browser_action": {
 			"browser_style": true,
 			"default_icon": {

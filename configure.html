@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv=Content-Type content="text/html;charset=UTF-8">
+	<link rel="stylesheet" href="css/makeit.css">
+	<link rel="stylesheet" href="css/configure.css">
+    	<link rel="stylesheet" href="css/symbols.css">
+    	<link rel="stylesheet" href="css/animation.css">
+    	<link rel="icon" type="image/png" href="icon.png" />
+    	<title>y-Translate configuration</title>
+</head>
+<body ng-app="p2ptm" data-framework="angularjs" ng-controller="mainCtrl" >
+	<!-- top  acl projects/edit/new... -->
+	<div id="menuinterruption"></div>
+	<nav id="toppanel" class="ctrl">
+		<div class="navcontrols" style="text-align: center">
+			
+				 <img src="icon.png" width="16px" height="16px"></img>&nbsp;y-Translate configuration
+			
+		</div>
+	</nav>
+	<nav id="procIndicator" class="ctrl right">
+		<div class="navcontrols">
+			<i class="icon-spin2 animate-spin"></i>&nbsp;<span>Loading...</span>
+		</div>
+	</nav>
+	<!-- left on/off -->
+	<aside id="leftslash">
+		<section>
+
+			<div ng-click="slideProjects()" class="primary">
+			<i class="icon-language" style="float:left"></i>Behaviour</div>
+
+			<div ng-click="slideProjects()" class="primary">
+			<i class="icon-flight" style="float:left"></i>Services</div>
+
+			<div ng-click="slideProjects()" class="primary">
+			<i class="icon-code" style="float:left"></i>Appearance</div>
+
+			<div ng-click="slideProjects()" class="primary">
+			<i class="icon-lightbulb" style="float:left"></i>About</div>
+		</section>
+		<footer class="footer"></footer>
+	</aside>
+	<!-- on/off [src|dst] -->
+	<section class="workzone">
+		<section id="projects" class="workzonepanel slidepanel slidepon">
+
+			<div class="scontent">
+				<h1>Behaviour settings&nbsp;<span class="hinfo" id="behSaved">saved...</span></h1>
+				<div id="switch-project">
+						<form>
+<!-- 							<div class="fc-group">
+								<label><input type="checkbox" disabled="disabled" checked="checked" />&nbsp;OWNER</label>
+							</div> -->
+							<div class="fc-group">
+								 <label>Initiation of translation: </label>
+								<div class="fc-controls">
+								<br />
+									<p class="ptoggle">By Mouse: 
+									   <a toggleme ng-model="settings.activateModeMouse" id="toggle-empty" class="toggle" ><i class="icon-toggle-off"></i></a></p>
+									<p class="ptoggle">By Keyboard: 
+									   <a toggleme ng-model="settings.activateModeKey" id="toggle-empty" class="toggle" ><i class="icon-toggle-off"></i></a></p>
+								</div>
+							</div>
+							<div class="fc-group" ng-class="{hidden: settings.activateModeMouse}">
+								<label>Set Keyboard key: </label>
+								<div class="fc-controls">
+		
+								<input type="text" inpkey ng-model="settings.translateEvtKeybrd" style="font-family: sans;font-size: 15pt;" />
+								</div>
+							</div>
+							<div class="fc-group" ng-class="{hidden: settings.activateModeKey}">
+								<label>Mouse Hover Delay:({{(props.baloonLagMs*0.001).toFixed(1)+"sec. "+howFast() }})</label>
+								<div class="fc-controls">
+
+									<input type="range" min="700" max="2400" ng-model="settings.baloonLagMs" />
+								</div>
+							</div>
+							<div class="fc-group fc-hl"></div>
+							<div class="fc-group">
+								<label>dist language</label><br/>
+								<div class="fc-controls">
+								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO" style="width:100pt"></select>
+								</div>
+							</div>
+
+							<div class="fc-group">
+								<label>alt language</label><br/>
+								<div class="fc-controls">
+								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO_ALT" style="width:100pt"></select>
+								</div>
+							</div>
+							<div class="fc-group fc-hl"></div>
+							<div class="fc-group">
+								<label>Allow to copy result  to clipboard:</label>
+
+									  <a toggleme ng-model="settings.clipboarcpy" id="toggle-clipboard" class="toggle" ><i class="icon-toggle-off"></i></a>
+							</div>
+							<div class="fc-group" ng-class="{hidden: !settings.clipboarcpy}">
+							<label>Clipboard copy keyboard key:</label>	
+						   		<div class="fc-controls">
+						   			
+									<input type="text" inpkey ng-model="settings.clipboardcpykey" style="font-family: sans;font-size: 15pt;" id="toggle-clipboard-key"  />
+								</div>
+							</div>
+							<!-- <div class="fc-group">
+								<div class="fc-controls">
+									<div class="primary" ng-click="set_Project()">
+										<i class="icon-ok-circled2"></i>Save changes.
+									</div>
+									<div class="primary" ng-click="newVerImport()">
+										<i class="icon-plus-circled"></i>Add chapter (version).
+									</div>
+									<div class="primary" ng-click="exportProject(sentences_project)">
+										<i class="icon-upload"></i>Export project
+									</div>									
+								</div>
+							</div> -->
+						</form>
+					</div>
+				</div>
+		</section>
+		
+	<!-- pop up's -->
+
+
+	<!-- ui deps -->
+	<script type="text/javascript" src="js/angular.min.js"></script>
+
+	<script type="text/javascript" src="holder.js"></script>
+	<script type="text/javascript" src="langlist.js"></script>
+	<script type="text/javascript" src="configure.js"></script>
+
+	<!-- <script type="text/javascript" src="js/configure.js"></script> -->
+	<!-- <script type="text/javascript" src="deps/angular-animate.js"></script> -->
+	<!-- third deps -->
+	<script type="text/javascript" src="CONST.js"></script>
+	<script type="text/javascript" src="ytranslate3.js"></script>
+	<script type="text/javascript" src="invokeLimiter.js"></script> 
+	<script type="text/javascript" src="page_interface.js"></script>
+	
+</body>
+</html>
