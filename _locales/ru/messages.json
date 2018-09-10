@@ -21,7 +21,7 @@
     "message": "Статус"
   },
   "wdg_stateOn": {
-    "message": "вкл"
+    "message": "вклч"
   },
   "wdg_FROM_LNG": {
     "message": "Язык содержания cайта"
@@ -35,7 +35,9 @@
   "wdg_stateOff": {
     "message": "откл"
   },
-
+  "wdg_configuration_title": {
+    "message": "Настройки"
+  },
   "gem_en": {
     "message": "Английский"
   },

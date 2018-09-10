@@ -5,10 +5,24 @@ async function connected(number_eventId)
 {
 	number_eventId = number_eventId | CONST.ACTION_B_BEEP;
 
-	var ret_msg = await browser.runtime.sendMessage({action: number_eventId});
-	let message = ret_msg;
-	port_connected = true;
-	got_message(message);	
+	var ret_msg = browser.runtime.sendMessage({action: number_eventId});
+	return new Promise(resolve => {
+		ret_msg.then(
+				function(message)
+				{
+					port_connected = true;
+					resolve();
+
+					got_message(message);	
+				},
+				function(err)
+				{
+					setTimeout(function(){
+						connected(number_eventId);
+					}, Math.random()*2000+500);
+				}
+			);
+	});
 }
 function got_message(message)
 {
@@ -43,29 +57,25 @@ function emit()
 	var number_eventId = arguments[0];
 	if(port_connected)
 	{
-		console.log("emmision", dargs)
 		var ret_msg = browser.runtime.sendMessage({action: number_eventId, args: dargs});
 		ret_msg.then(
 			function(message)
 			{
-				console.log("con callback", message)
-				port_connected = true;
+				console.log("emmision callback", message)
 
 				got_message(message);
 			},
 			function(err)
 			{
-				console.log("emit err", err)
+				console.log("emmision err", err)
 			}
 		);
 	}
 	else
 	{	
-		console.log("deferred emmision", dargs)
 		setTimeout(function(){
-			// browser.runtime.sendMessage({action: number_eventId, args: dargs});
 			emit.apply(window, dargs);
-		}, 5000);
+		}, 1000);
 	}
 }
 browser.runtime.onMessage.addListener(communication_gate);

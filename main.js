@@ -11,14 +11,53 @@ preferences.read_model(function()
 var parameters = {LNG_TO: 'ru', LNG_TO_ALT: "en" };
 var currentTab;
 
+var book_url_tabId = {};
+var book_tabId_url = [];
+function set_url_tabid(string_url, number_tabId)
+{
+	remove_tabid(number_tabId);
+	book_tabId_url[number_tabId] = string_url;
+
+	var ref_url_ = book_url_tabId[string_url];
+	if(ref_url_ !== undefined)
+	{
+		ref_url_.push(number_tabId);
+	}
+	else
+	{
+		book_url_tabId[string_url] = [number_tabId];
+	}
+}
+function remove_tabid(number_tabId)
+{
+	var ref_tabid_ = book_tabId_url[number_tabId];
+	if(ref_tabid_ !== undefined)
+	{
+		var prev_url_ = book_tabId_url[number_tabId];
+		var remat_ = book_url_tabId[prev_url_].indexOf(number_tabId);
+		book_url_tabId[prev_url_].splice(remat_, 1);
+		if(book_url_tabId[prev_url_].length === 0)
+		{
+			delete book_url_tabId[prev_url_];
+		}
+	}
+}
+function get_url_tabIds(string_url)
+{
+	return book_url_tabId[string_url];
+}
+
 function communication_gate(object_message, sender, sendResponse) 
 {
 	switch(object_message.action)
 	{
 		case CONST.ACTION_B_BEEP:
-			console.log("action beep from main.js "+sender.tab.id);
-			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_BEEP});
 
+			console.log("action beep from main.js "+sender.tab.id);
+
+			set_url_tabid(getHostName(sender.tab.url, true), sender.tab.id);
+
+			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_BEEP});
 
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Prefs, args: [prefs]});
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Urls, args: [{ajax_loader: browser.runtime.getURL("ajax-loader.gif")}]});
@@ -52,13 +91,28 @@ function communication_gate(object_message, sender, sendResponse)
 		case CONST.ACTION_B_disableUrl:
 			var url___ = object_message.args[1].url;
 			var isin = preferences.isHostIn(url___);
+			var tabs_event_ = -1;
 			if(isin)
 			{
 				preferences.dropHostUrl(url___);
+				tabs_event_ = CONST.ACTION_F_enable;
 			}
 			else
 			{
 				preferences.pushHostUrl(url___);
+				tabs_event_ = CONST.ACTION_F_disable;
+			}
+			var tabs_ = get_url_tabIds(url___);
+			if(tabs_)
+			{
+				for (var i = 0; i < tabs_.length; i++) 
+				{
+					var sent = browser.tabs.sendMessage(tabs_[i], {action: tabs_event_, args: []});
+					let tabid = tabs_[i];
+					sent.catch(function(err){
+						remove_tabid(tabid);
+					});
+				}
 			}
 			sendResponse([
 				{action: CONST.ACTION_W_state, args: [{isin: !isin, url: url___, prefs: preferences.getHostPrefs(url___)}]}

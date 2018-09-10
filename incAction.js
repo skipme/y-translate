@@ -7,7 +7,7 @@
 	}
 	escapeHTML.replacements = { "&": "&amp;", '"': "&quot;", "<": "&lt;", ">": "&gt;" };
 	
-	var locStrings = ["wdg_state", "wdg_remark", "wdg_stateOn", "wdg_stateOff", "wdg_unavailable", "wdg_FROM_LNG"];
+	var locStrings = ["wdg_status", "wdg_remark", "wdg_stateOn", "wdg_stateOff", "wdg_unavailable", "wdg_FROM_LNG", "wdg_configuration_title"];
 	var localisedStrings = null;
 	var elemtitlelng = document.getElementById("l-titlelng");
 	var elemActionChangeStatus = document.getElementById("p-change");
@@ -16,6 +16,7 @@
 	var elemLNG_FROM = document.getElementById('LNG_FROM');
 	var elemOpenApp = document.getElementById('openapp');
 	var elemConfigApp = document.getElementById('configure');
+
 	var WState = null;
 	var disabled = true;
 	var lang_list = null;
@@ -70,6 +71,7 @@
 	dispatch(CONST.ACTION_W_locStrings, function(_locStrings){
 		localisedStrings = _locStrings;
 		elemtitlelng.textContent = localisedStrings["wdg_FROM_LNG"];
+		elemConfigApp.getElementsByTagName("i")[0].title = localisedStrings["wdg_configuration_title"];
 	});
 	// self.port.on("locLangs", function(list){
 	dispatch(CONST.ACTION_W_locLangs, function(list){
@@ -123,10 +125,10 @@
 	}
 	con_port()
 
-	elemOpenApp.addEventListener("click", function(){
-		self.port.emit("openApp", {});
-	});
+	// elemOpenApp.addEventListener("click", function(){
+	// 	self.port.emit("openApp", {});
+	// });
 	elemConfigApp.addEventListener("click", function(){
-		self.port.emit("openConfApp", {});
+		emit(CONST.ACTION_B_openConfApp, {});
 	});
 // }());

@@ -122,7 +122,7 @@
 
 	// - reflect page lng:
 		//self.port.emit('page_lng', $('html').attr('lang'));
-		console.log("trying to emit page lng")
+
 		var htmln = $tag('html');
 		if(htmln.length > 0)
 			emit(CONST.ACTION_B_page_lng, htmln[0].getAttribute('lang'));

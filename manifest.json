@@ -19,6 +19,7 @@
 		"default_popup": "action.html",
 		"default_title": "y-Translate3"
 	}, 
+	"web_accessible_resources": ["ajax-loader.gif"],
   	"content_scripts": [
 	    {
 	      // "exclude_matches": ["moz-extension://*"],
