@@ -1,3 +1,58 @@
 {
+  "translateEvtType_options_Cursor_hover_on_the_text": {
+    "message": "Cursor hover"
+  },
+  "translateEvtType_options_Hit_keyboard_key": {
+    "message": "Keyboard press"
+  },
+  "translateEvtType_title": {
+    "message": "Invoke translation then"
+  },
+  "translateEvtKeybrd_title": {
+    "message": "Keyboard button key"
+  },
 
+  "wdg_status": {
+    "message": "Status"
+  },
+  "wdg_stateOn": {
+    "message": "on"
+  },
+  "wdg_FROM_LNG": {
+    "message": "Site language"
+  },
+  "wdg_unavailable": {
+    "message": "unavailable"
+  },
+  "wdg_remark": {
+    "message": "* Disabled host addresses saved automatically"
+  },
+  "wdg_stateOff": {
+    "message": "off"
+  },
+  "wdg_configuration_title": {
+    "message": "Settings"
+  },
+  "gem_en": {
+    "message": "English"
+  },
+  "gem_ru": {
+    "message": "Russian"
+  },
+  "gem_de": {
+    "message": "German"
+  },
+  "gem_auto": {
+    "message": "Auto detect"
+  },
+  "gem_es": {
+    "message": "Spanish"
+  },
+  "gem_fr": {
+    "message": "French"
+  },
+  "gem_it": {
+    "message": "Italian"
+  }
+  
 }
