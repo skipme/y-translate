@@ -54,7 +54,10 @@ function remove_tabid(number_tabId)
 }
 function get_url_tabIds(string_url)
 {
-	return book_url_tabId[string_url].tabs;
+	if(book_url_tabId[string_url])
+		return book_url_tabId[string_url].tabs;
+	else
+		return undefined;
 }
 
 function communication_gate(object_message, sender, sendResponse) 
@@ -245,8 +248,8 @@ function handleRemoved(tabId, removeInfo)
   	configPage_tab_id = -1;
   	// console.log("config closed");
   }
-  if(list_connected_tabs.indexOf(number_tabId) >= 0)
-  	remove_tabid(number_tabId);
+  if(list_connected_tabs.indexOf(tabId) >= 0)
+  	remove_tabid(tabId);
 }
 
 browser.tabs.onRemoved.addListener(handleRemoved);

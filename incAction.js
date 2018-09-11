@@ -43,7 +43,9 @@
 		disabled = false;
 		populateLangs(lang_list);
 		var url = _state.url;
-		if(url.indexOf("about:") === 0 || (url.indexOf("resource:") === 0 || url.indexOf("moz-extension://") === 0))
+		if(url.indexOf("about:") === 0 || (url.indexOf("resource:") === 0 || url.indexOf("moz-extension://") === 0) || 
+			/https?:\/\/addons\.mozilla\.org/.test(url) || 
+			/https?:\/\/testpilot\.firefox\.com/.test(url) )
 		{
 			url = localisedStrings["wdg_unavailable"];
 			elemActionChangeStatus.style.display = "none";
