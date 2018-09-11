@@ -34,13 +34,7 @@ function request(succ, err, data, url)
             }
         }
     };
-    // if (method === "GET")
-    //     request.send();
-    // else if (method === "POST") {
-        // request.setRequestHeader('X-PINGOTHER', 'pingpong');
-    // request.setRequestHeader('Content-Type', 'application/json');
-    // request.send(JSON.stringify(data));
-    // request.setRequestHeader('X-PINGOTHER', 'pingpong');
+
     request.send();
-    // }
+
 }

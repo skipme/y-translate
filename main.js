@@ -3,12 +3,15 @@
 // {
 // 	window.browser = chrome;
 // }
+
+var configPage_tab_id = -1;
+var parameters = {LNG_TO: 'ru', LNG_TO_ALT: "en" };
 preferences.read_model(function()
 {
-
+	let prefs = preferences.getPrefs();
+	parameters.LNG_TO = prefs.translateLNG_PREFER_TO;
+	parameters.LNG_TO_ALT = prefs.translateLNG_PREFER_TO_ALT;
 });
-
-var parameters = {LNG_TO: 'ru', LNG_TO_ALT: "en" };
 var currentTab;
 
 var book_url_tabId = {};
@@ -150,16 +153,33 @@ function communication_gate(object_message, sender, sendResponse)
 				]);
 		break;
 		case CONST.ACTION_B_openConfApp:
+				function showcfg()
+				{
+				   let creating = browser.tabs.create({
+				     url: browser.runtime.getURL("configure.html")
+				   });
+				   creating.then(function(tab){
+				   	configPage_tab_id = tab.id;
+				   }, function(){});
+				}
 
-			  var creating = browser.tabs.create({
-			    url: browser.runtime.getURL("configure.html")
-			  });
-			  creating.then(function(tab){
-
-			  }, function(){});
+			  if(configPage_tab_id !== -1)
+			  {
+			  	let removed = browser.tabs.remove(configPage_tab_id);
+			  	removed.then(showcfg);
+			  }
+			  else
+			  {
+			  	showcfg();
+			  }
+			  
 		break;
 		case CONST.ACTION_B_cfgSet:
-			var _prefs_ = object_message.args[1];
+			let _prefs_ = object_message.args[1];
+
+			parameters.LNG_TO = _prefs_.translateLNG_PREFER_TO;
+			parameters.LNG_TO_ALT = _prefs_.translateLNG_PREFER_TO_ALT;
+
 			preferences.setPrefs(_prefs_);
 
 			// for(var t in list_connected_tabs)
@@ -207,7 +227,7 @@ function updateActiveTab(tabs) {
 }
 
 // listen to tab URL changes
-browser.tabs.onUpdated.addListener(updateActiveTab);
+// browser.tabs.onUpdated.addListener(updateActiveTab);
 
 // listen to tab switching
 browser.tabs.onActivated.addListener(updateActiveTab);
@@ -218,47 +238,46 @@ browser.windows.onFocusChanged.addListener(updateActiveTab);
 // update when the extension loads initially
 updateActiveTab();
 
+function handleRemoved(tabId, removeInfo)
+{
+  if(tabId === configPage_tab_id)
+  {
+  	configPage_tab_id = -1;
+  	// console.log("config closed");
+  }
+  if(list_connected_tabs.indexOf(number_tabId) >= 0)
+  	remove_tabid(number_tabId);
+}
+
+browser.tabs.onRemoved.addListener(handleRemoved);
+
+function handleUpdated(tabId, changeInfo, tabInfo) 
+{
+  if (changeInfo.url) 
+  {
+	  if(tabId === configPage_tab_id && changeInfo.url !== browser.runtime.getURL("configure.html"))
+	  {
+	  	configPage_tab_id = -1;
+	  	// console.log("config closed");
+	  }
+	  if(configPage_tab_id === -1 && changeInfo.url === browser.runtime.getURL("configure.html"))
+	  {
+	  	configPage_tab_id = tabId;
+	  	// console.log("config opened");
+	  }
+  }
+  updateActiveTab();
+}
+browser.tabs.onUpdated.addListener(handleUpdated);
+
 function translate(tab_id, lng_from, sentence, secondTry)
 {
   var t = new translator.translator(sentence, parameters.LNG_TO, parameters.LNG_TO_ALT);
   t.translate(lng_from, function(){
-    // if(t.OK)
-    browser.tabs.sendMessage(tab_id, {action: CONST.ACTION_F_showTranslated, args: [sentence, t.source, t.translated, t.also1, t.also2, t.srcDetected, t.useDistLang]});
-      // worker.port.emit("showTranslated", sentence, t.source, t.translated, t.also1, t.also2, t.srcDetected, t.useDistLang);
-    // else
-    // {
-    //   if(t.redirectURL !== null)
-    //   {
-    //     if(redirectPage === null)
-    //     { 
-    //       beforeRedirectPage = tabs.activeTab;
-    //       beforeRedirectPage.on('close', function(tab){
-    //         beforeRedirectPage = null;
-    //       });
-    //       tabs.open({url: t.redirectURL, 
-    //         // isPinned: true,
-    //         onOpen: function onOpen(tab) {
-            
-    //          redirectPage = tab;
-    //           tab.on('close', function(tab){
-    //             redirectPage = null;
-    //             if(beforeRedirectPage)
-    //             {
-    //               beforeRedirectPage.activate();
-    //               beforeRedirectPage.window.activate();
-    //               beforeRedirectPage = null;
-    //             }
-    //           });
-    //         }
-    //       });
-    //     }else{
-    //       redirectPage.url = t.redirectURL;
-    //       redirectPage.activate();
-    //       redirectPage.window.activate();
-    //     }
-    //   }
-    //   worker.port.emit("showTranslated", sentence, "Error", t.errorMessage);
-    // }
+    if(t.OK)
+    {
+	    browser.tabs.sendMessage(tab_id, {action: CONST.ACTION_F_showTranslated, args: [sentence, t.source, t.translated, t.also1, t.also2, t.srcDetected, t.useDistLang]});
+	}
   });
 }
 var _l = browser.i18n.getMessage;

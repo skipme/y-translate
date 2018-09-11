@@ -51,7 +51,9 @@ var preferences =
 		
 		this.extension_prefs = data;
 
-		console.log("ep", that.extension_prefs)
+		console.log("ep", that.extension_prefs);
+		
+		function_callback();
 	},
 
 	storage_error_callback: function(err)
