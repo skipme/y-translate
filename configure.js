@@ -314,8 +314,307 @@
 		}
 	};
 
+	function jqLiteHasClass(element, selector) 
+	{
+	  if (!element.getAttribute) return false;
+	  return ((' ' + (element.getAttribute('class') || '') + ' ').replace(/[\n\t]/g, ' ').
+	      indexOf(' ' + selector + ' ') > -1);
+	}
+
 	// MODULE 
-	var p2ptm = angular.module('p2ptm', [/*'ngAnimate'*/]);
+	// var p2ptm = angular.module('p2ptm', [/*'ngAnimate'*/]);
+	
+	var p2ptm = p2ptranslate.p2ptm = 
+	{
+		$scope: {
+			$apply: function()
+			{
+				p2ptm.$rerender();
+			}
+		},
+		pxy_classes: {},
+		pxy_bindings: {},
+		binded_elements: [],
+		run: function(cb)
+		{
+			
+			cb();
+		},
+		// p2ptm.filter('lang', function() {
+		filter: function(name, ffoo)
+		{
+
+		},
+		update_classes: function(prop_name, prop_val)
+		{
+			let dl = this.pxy_classes[prop_name];
+			for (var j = 0; j < dl.length; j++) 
+			{
+				let d = dl[j];
+				let ison = d.element.classList.contains(d.class);
+				// console.log(" = =c", ison, prop_name, prop_val)
+				if(ison && prop_val && !d.neg || !ison && prop_val && d.neg)
+					return;
+				if(ison && !prop_val && !d.neg || ison && prop_val && d.neg)
+				{
+					d.element.classList.remove(d.class);
+				}
+				if(!ison && prop_val && !d.neg || !ison && !prop_val && d.neg)
+				{
+					d.element.classList.add(d.class);
+				}
+			}
+		},
+		$setter_proxy: function(prop_name, prop_val, bool_set)
+		{
+			// console.log("#setter", prop_name, prop_val, bool_set);
+			if(!bool_set && this.pxy_classes[prop_name] !== undefined)
+			{
+				this.update_classes(prop_name, prop_val);
+			}
+			if(!bool_set && this.pxy_bindings[prop_name] !== undefined)
+			{
+				let dl = this.pxy_bindings[prop_name];
+				for (var j = 0; j < dl.length; j++) 
+				{
+					let d = dl[j];
+					// 
+					if(d.element.$ng)
+					{
+						d.element.$ng.$bind_view_value(prop_val);
+					}
+				}
+				let that = this;
+				// console.log(" x delay");
+				this.$rerender();
+			}
+		},
+		$rerender: function()
+		{
+			let that = this;
+			p2ptranslate.c.delay("$render", function()
+				{
+					for (var i = 0; i < that.binded_elements.length; i++) 
+					{
+						// console.log(that.binded_elements[i])
+						if(that.binded_elements[i].$ng)
+						{
+							let ex = p2ptm.$scope;
+							let path = that.binded_elements[i].$binding.split(".");
+
+							if(!Object.hasOwnProperty(that.binded_elements[i], "$binding_getter")
+								&& !Object.hasOwnProperty(that.binded_elements[i], "$binding_setter"))
+							{
+								for (var j = 0; j < path.length -1; j++) 
+								{
+									ex = ex[path[j]];
+								}
+								if(ex)
+								{
+									that.binded_elements[i].$binding_getter = Object.getOwnPropertyDescriptor(ex, path[path.length -1]).get;
+									that.binded_elements[i].$binding_setter = Object.getOwnPropertyDescriptor(ex, path[path.length -1]).set;
+								}
+							}
+							if(that.binded_elements[i].$binding_getter)
+							{
+								// that.binded_elements[i].$ng.$viewValue = that.binded_elements[i].$binding_getter();
+								let getprop = that.binded_elements[i].$binding_getter();
+								that.binded_elements[i].$ng.$bind_view_value(getprop);
+								if(that.pxy_classes[that.binded_elements[i].$binding])
+								{
+									that.update_classes(that.binded_elements[i].$binding, getprop);
+								}
+							}
+
+							// console.log("rerender", that.binded_elements[i].$binding, that.binded_elements[i].$ng.$viewValue, that.binded_elements[i].$binding_getter, that.binded_elements[i]);
+							that.binded_elements[i].$ng.$render();
+						}
+					}
+				}
+				, 100);
+		},
+		// p2ptm.controller('mainCtrl', ['$scope', '$http', function mainCtrl($scope, $location) {
+		controller: function(name, args)
+		{
+			let foo = args[2];
+			foo(this.$scope);
+
+			{
+				let elements = document.querySelectorAll("[ng-class]");
+				for (var i = 0; i < elements.length; i++) 
+				{		
+					let class_def = elements[i].getAttribute("ng-class");
+
+					class_def = class_def.replace(/[{} ]/g,"").split(":");
+
+					let scope_path = class_def[1].replace(/\!/g,"");
+					if(this.pxy_classes[scope_path] === undefined)
+						this.pxy_classes[scope_path] = [];
+
+					this.pxy_classes[scope_path].push({class: class_def[0], element: elements[i], neg: class_def[1].indexOf('!') === 0});
+				}
+			}
+			{
+				let elements = document.querySelectorAll("[ng-model]");
+				for (var i = 0; i < elements.length; i++) 
+				{		
+					let scope_path = elements[i].getAttribute("ng-model");
+
+					if(this.pxy_bindings[scope_path] === undefined)
+						this.pxy_bindings[scope_path] = [];
+
+					this.pxy_bindings[scope_path].push({element: elements[i]});
+
+					elements[i].$binding = scope_path;
+
+					let ex = p2ptm.$scope;
+					let path = scope_path.split(".");
+					for (var j = 0; j < path.length -1; j++) 
+					{
+						ex = ex[path[j]];
+					}
+					if(ex)
+					{	
+						// Object.defineProperty(elements[i], "$binding_getter", {get: Object.getOwnPropertyDescriptor(ex, path[path.length -1]).get});
+						elements[i].$binding_getter = Object.getOwnPropertyDescriptor(ex, path[path.length -1]).get;
+						elements[i].$binding_setter = Object.getOwnPropertyDescriptor(ex, path[path.length -1]).set;
+					}
+					let element = [elements[i]];
+					this.checkNgInElement(element);
+					if(elements[i].nodeName === "INPUT" || elements[i].nodeName === "SELECT")
+					{
+						elements[i].addEventListener("change", elements[i].$ng.$change);
+					}
+					this.binded_elements.push(elements[i]);
+				}
+			}
+			{
+				let elements = document.querySelectorAll("[ang-select]");
+				for (var i = 0; i < elements.length; i++) 
+				{
+					let scope_path = elements[i].getAttribute("ang-select");
+					let ex = p2ptm.$scope;
+					let path = scope_path.split(".");
+					for (var j = 0; j < path.length; j++) 
+					{
+						ex = ex[path[j]];
+					}
+					
+					let list = ex;
+					for(var j=0; j < list.length; j++) 
+					{
+					    var d = list[j];
+					    var selected = false;
+
+			 			var opt2 = document.createElement("option");
+			 			opt2.value = d;
+			 			opt2.text = p2ptranslate.langs.getName("en", d);
+			 			opt2.selected = selected?"selected":"";
+					    elements[i].options.add(opt2);
+					}
+				}
+			}
+
+			for (var k in this.$scope) 
+			{
+				if(typeof this.$scope[k] === "object")
+				{
+					// createSettersProxy(string_name, object_setters, function_proxy)
+					createSettersProxy(k, this.$scope[k], function(p, v, ch){p2ptm.$setter_proxy(p, v, ch);})
+				}
+			}
+		},
+		$apply: function(cb)
+		{
+			cb();
+		},
+		checkNgInElement: function(element)
+		{
+			if(!element[0].$ng)
+			{
+				element.$ng = element[0].$ng = {
+					$render: function(){},
+					$viewValue: "",
+					$setViewValue: function(val)
+					{
+						// element[0].value = val;
+						// this.$viewValue = val;
+						if(element[0].hasOwnProperty("$binding_setter"))
+						{
+							// console.log("html to model ", element[0], val)
+							element[0].$binding_setter(val);
+						}
+						else
+						{
+							this.$bind_view_value(val);
+						}
+						// this.$render();
+					},
+					$bind_view_value: function(val)
+					{
+						this.$viewValue = val;
+						if(element[0].nodeName === "INPUT")
+							element[0].value = val;
+						let dict = "en";
+						if(element[0].nodeName === "SELECT")
+						{
+							if(element[0].options.length >= 0)
+							{
+								for (var i = 0; i < element[0].options.length; i++) 
+								{
+									element[0].options[i].selected = element[0].options[i].value === val ? "selected" :"";
+								}
+							}
+						}
+						if(element[0].childElementCount === 0)
+							element[0].textContent = val;
+					},
+					$change: function()
+					{
+						if(element[0].value !== this.$ng.$viewValue)
+						{
+							this.$ng.$setViewValue(element[0].value);
+						}
+					}
+				};
+			}
+			else{
+				element.$ng = element[0].$ng;
+			}
+		},
+		directive: function(string_elem, function_dir)
+		{
+			if(typeof function_dir !== "function" && function_dir.length > 0)
+				function_dir = function_dir[1];
+
+			let dir = function_dir();
+			// console.log("dir", string_elem, dir)
+			let sel;
+			if(dir.restrict === "E")
+				sel = string_elem;
+			if(dir.restrict === "A")
+				sel = "["+string_elem+"]";
+			
+			let elements = document.querySelectorAll(sel);
+			for (var i = 0; i < elements.length; i++) 
+			{
+				let element = [elements[i]];
+				
+				this.checkNgInElement(element);
+
+				element.hasClass = function(str){return jqLiteHasClass(element[0], str);}
+				element.on = function(str, cb){
+					element[0].addEventListener(str, cb);
+				}
+				// console.log(element)
+				if(dir.link)
+				{
+					dir.link(p2ptm, element, undefined/*attrs*/, element.$ng);
+					// element.$ng.$render();
+				}
+			}
+		}
+	};
 	p2ptm.run(function () {
         // Do post-load initialization stuff here
         // some ui initialisation
@@ -327,29 +626,10 @@
         // single.showProjects();
         single.checkFilterSeparatorUi();
     });
-    p2ptm.directive('contenteditable', function() {
-	  return {
-	    require: 'ngModel',
-	    link: function(scope, elm, attrs, ctrl) {
-	      // view -> model
-	      elm.on('blur', function() {
-	        scope.$apply(function() {
-	          var vx = p2ptranslate.c.convHtml2PT(elm.html());
-	          ctrl.$setViewValue(vx);
-	          elm.html(p2ptranslate.c.convPT2Html(vx));
-	        });
-	      });
 
-	      // model -> view
-	      ctrl.$render = function() {
-	        elm.html(p2ptranslate.c.convPT2Html(ctrl.$viewValue));
-	      };
-	    }
-	  };
-	});
 	var animLabelDirFactory = ["$compile", function($compile) {
 		return {
-			restrict: 'E',
+			restrict: 'E',//element, tag 
 			require: '?ngModel',
 		link: function(scope, elm, attrs, ctrl) {
 			if(!ctrl || !elm.hasClass("dem") )
@@ -369,10 +649,10 @@
 		};
 	}];
 	p2ptm.directive('input', animLabelDirFactory);
-	p2ptm.directive('textarea', animLabelDirFactory);
+	// p2ptm.directive('textarea', animLabelDirFactory);
 	p2ptm.directive('toggleme', function(){
 		return {
-				restrict: 'A',
+				restrict: 'A',//attribute
 				require: 'ngModel',
 				link: function(scope, elm, attrs, ctrl) {
 					if(!ctrl || !elm.hasClass("toggle"))
@@ -408,28 +688,89 @@
 				}
 		};
 	});
-	p2ptm.directive('rtoggleme', function(){
-		return {
+	// p2ptm.directive('rtoggleme', function(){
+	// 	return {
 				
-				restrict: 'A',
+	// 			restrict: 'A',
+	// 			require: 'ngModel',
+	// 			link: function(scope, elm, attrs, ctrl) {
+	// 				if(!ctrl || !elm.hasClass("toggle"))
+	// 				{
+	// 					return;
+	// 				}
+	// 				var ielem = elm[0].getElementsByTagName("i")[0];
+
+	// 				// model -> view
+	// 				ctrl.$render = function() {
+	// 					if(ctrl.$viewValue)
+	// 					{
+	// 						ielem.classList.remove('icon-toggle-off');
+	// 						ielem.classList.add('icon-toggle-on');
+	// 					}else{
+	// 						ielem.classList.remove('icon-toggle-on');
+	// 						ielem.classList.add('icon-toggle-off');
+	// 					}
+	// 				};
+	// 			}
+	// 	};
+	// });
+	function createSettersProxy(string_name, object_setters, function_proxy)
+	{
+	    Object.keys(object_setters).forEach((property) => {
+	        let descriptor = Object.getOwnPropertyDescriptor(object_setters, property);
+	        if (typeof descriptor.set === 'function'
+	        	&& property.indexOf("_orig_") < 0) 
+	        {
+	            // console.log("set is ", property);
+	            let pxy_name = property +"_orig_";
+
+	            if(!object_setters.hasOwnProperty(pxy_name))
+	            {
+		            Object.defineProperty(object_setters, pxy_name, descriptor);
+		        }
+		        let prop_path = string_name+"."+property;
+		        let allows_get = typeof descriptor.get === 'function';
+	            let proxy_f = function(v)
+	            {
+	            	function_proxy(prop_path, v, true);// PROXY SPEC SET
+	            	object_setters[pxy_name] = v;
+	            	if(allows_get)
+	            	{
+	            		function_proxy(prop_path, descriptor.get(), false);// PROXY SPEC GET
+	            	}
+	            };
+	            Object.defineProperty(object_setters, property, {set: proxy_f});
+	            if(allows_get)
+	            {
+	            	function_proxy(prop_path, descriptor.get(), false);
+	            }
+	        }
+	    });
+	}
+	p2ptm.directive('inpkey', function(){
+		return {				
+			restrict: 'A',
 				require: 'ngModel',
 				link: function(scope, elm, attrs, ctrl) {
-					if(!ctrl || !elm.hasClass("toggle"))
+					if(!ctrl)
 					{
 						return;
 					}
-					var ielem = elm[0].getElementsByTagName("i")[0];
-
+					var ielem = elm[0];
+					
+					elm.on('keydown', function(e) {
+						// console.log(e)
+				        scope.$apply(function() {
+				          var key = e.ctrlKey ? "ctrl":(e.shiftKey ? "shift":(e.altKey ? "alt":""));
+				          var kc = String.fromCharCode(e.keyCode).toLowerCase();
+				          ctrl.$setViewValue((e.keyCode>18) ? (key.length===0 ? kc :(key+"+"+ kc )):key);
+				          ctrl.$render();
+				        });
+				        e.preventDefault();return false;
+				     });
 					// model -> view
 					ctrl.$render = function() {
-						if(ctrl.$viewValue)
-						{
-							ielem.classList.remove('icon-toggle-off');
-							ielem.classList.add('icon-toggle-on');
-						}else{
-							ielem.classList.remove('icon-toggle-on');
-							ielem.classList.add('icon-toggle-off');
-						}
+						ielem.value = '"'+ctrl.$viewValue+'"';
 					};
 				}
 		};
@@ -462,30 +803,13 @@
 				}
 		};
 	});
-	// filters
-	p2ptm.filter('sentenceConditions', function() {
-	    return function(input, b,h) {
-	    	if(input === undefined || input === null || input.length === undefined || input.length === null)
-	    		return input;
-	        var out = [];
-	        for (var i = 0; i < input.length; i++) {
-	            if(!input[i].isBlank && !input[i].isHidden){
-	                out.push(input[i]);
-	            }else if((input[i].isBlank && b) || (input[i].isHidden && h))
-	            {
-	            	out.push(input[i]);
-	            }
-	        }
-	        return out;
-	    }
-	});
-	p2ptm.filter('lang', function() {
-	    return function(input) {
-	    	var dict = "en";
-	    	var out = p2ptranslate.langs.getName(dict, input);
-	        return out;
-	    }
-	});
+	// p2ptm.filter('lang', function() {
+	//     return function(input) {
+	//     	var dict = "en";
+	//     	var out = p2ptranslate.langs.getName(dict, input);
+	//         return out;
+	//     }
+	// });
 
 	// CONTROLLER 
     p2ptm.controller('mainCtrl', ['$scope', '$http', function mainCtrl($scope, $location) {
@@ -571,6 +895,11 @@
 	    			}, 1000);
     			}
     			else console.warn("p2ptranslate.cfgSet not initialised")
+    		},
+
+    		get view_howfast()
+    		{
+    			return ($scope.props.baloonLagMs*0.001).toFixed(1)+"sec. "+$scope.howFast();
     		}
     	};
 
@@ -603,6 +932,11 @@
 			};
 			if(!$scope.$$phase) 
 				$scope.$apply();
+
+			p2ptranslate.c.delay("$showin", function()
+				{
+					document.getElementById("projects").style.display = "block"
+				},100);
     	}
     	$scope.howFast = function()
     	{

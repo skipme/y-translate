@@ -44,7 +44,7 @@
 	</aside>
 	<!-- on/off [src|dst] -->
 	<section class="workzone">
-		<section id="projects" class="workzonepanel slidepanel slidepon">
+		<section id="projects" class="workzonepanel slidepanel slidepon" style="display: none;">
 
 			<div class="scontent">
 				<h1>Behaviour settings&nbsp;<span class="hinfo" id="behSaved">saved...</span></h1>
@@ -71,7 +71,8 @@
 								</div>
 							</div>
 							<div class="fc-group" ng-class="{hidden: settings.activateModeKey}">
-								<label>Mouse Hover Delay:({{(props.baloonLagMs*0.001).toFixed(1)+"sec. "+howFast() }})</label>
+								<label>Mouse Hover Delay: <!-- ({{(props.baloonLagMs*0.001).toFixed(1)+"sec. "+howFast() }}) -->
+									<span ng-model="settings.view_howfast"></span></label>
 								<div class="fc-controls">
 
 									<input type="range" min="700" max="2400" ng-model="settings.baloonLagMs" />
@@ -81,19 +82,19 @@
 							<div class="fc-group">
 								<label>dist language</label><br/>
 								<div class="fc-controls">
-								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO" style="width:100pt"></select>
+								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO" style="width:100pt" ang-select="langs.list"></select>
 								</div>
 							</div>
 
 							<div class="fc-group">
 								<label>alt language</label><br/>
 								<div class="fc-controls">
-								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO_ALT" style="width:100pt"></select>
+								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO_ALT" style="width:100pt" ang-select="langs.list"></select>
 								</div>
 							</div>
 							<div class="fc-group fc-hl"></div>
 							<div class="fc-group">
-								<label>Allow to copy result  to clipboard: - NOT SUPPORTED IN WEBEXT API -</label>
+								<label>Allow to copy result  to clipboard: - NOT SUPPORTED RIGHT NOW -</label>
 
 									  <a toggleme ng-model="settings.clipboarcpy" id="toggle-clipboard" class="toggle" ><i class="icon-toggle-off"></i></a>
 							</div>
@@ -114,7 +115,7 @@
 
 
 	<!-- ui deps -->
-	<script type="text/javascript" src="js/angular.min.js"></script>
+	<!-- <script type="text/javascript" src="js/angular.min.js"></script> -->
 
 	<script type="text/javascript" src="holder.js"></script>
 	<script type="text/javascript" src="langlist.js"></script>
