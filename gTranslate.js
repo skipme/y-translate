@@ -1,23 +1,15 @@
 
 // (function(){
-    // var Request = require("sdk/request").Request;
- //    var Request = require("./request_mod").Request;
-	// var prefs = require("./prefs");
 
-	//https://translate.yandex.net/api/v1/tr.json/translate?lang=en-ru&text=this%20is%20something%20with%20something&srv=tr-text&reason=value_changed
-	// var request_url = 'http://translate.google.com/translate_a/t?client=ytranslate';
-	// var request_url = 'http://translate.google.com/translate_a/t?client=ytranslate';
-	//var request_url = 'http://translate.google.com/translate_a/t';
-	var request_url = 'http://translate.google.com/translate_a/t';
-	// var request_url = 'http://clients5.google.com/translate_a/t';
-	//text=консоль&hl=ru&sl=ru&tl=en&ie=UTF-8&oe=UTF-8&multires=1&otf=2&trs=1&ssel=0&tsel=0&sc=1;
+	// TODO: http option in settings instead https
+	var request_url = 'https://translate.google.com/translate_a/t';
 
 	function gt_request_word(word, languageFrom, languageTo){
 		var http_cont = {
 			 client: "dict-chrome-ex",
 			//client: "y-translate",
 			text : word,
-			hl : "ru",//prefs.uiLocale,
+			hl : browser.i18n.getUILanguage(), // "en"
 			sl : languageFrom,
 			tl : languageTo,
 			ie : 'UTF-8',
