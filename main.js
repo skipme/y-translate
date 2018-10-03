@@ -19,6 +19,10 @@ var book_tabId_url = [];
 var list_connected_tabs = [];
 function set_url_tabid(string_url, number_tabId)
 {
+	if(book_tabId_url.indexOf(number_tabId) >= 0 
+		&& book_tabId_url[number_tabId] === string_url)
+		return;
+	
 	remove_tabid(number_tabId);
 
 	if(list_connected_tabs.indexOf(number_tabId) < 0)
@@ -47,6 +51,7 @@ function remove_tabid(number_tabId)
 		if(book_url_tabId[prev_url_].tabs.length === 0)
 		{
 			delete book_url_tabId[prev_url_];
+			delete book_tabId_url[number_tabId];
 		}
 	}
 	if((ref_tabid_ = list_connected_tabs.indexOf(number_tabId)) >= 0)
@@ -85,6 +90,7 @@ function communication_gate(object_message, sender, sendResponse)
           	{	
           		props___.page_lng = lng___;
           		preferences.setHostPrefs_temp(url___, props___);
+          		book_url_tabId[url___].prefs = props___;
           	}
 		break;
 		case CONST.ACTION_B_scoped:

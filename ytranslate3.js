@@ -1,7 +1,9 @@
+
+var CONST = window.clone(window.CONST);// twitch glitch (window.CONST undefined) some unpredicted behaviour?
 var dispatch_book = [];
 var port_connected = false;
 
-async function connected(number_eventId) 
+async function connected(number_eventId, bool_retry) 
 {
 	number_eventId = number_eventId | CONST.ACTION_B_BEEP;
 
@@ -10,6 +12,8 @@ async function connected(number_eventId)
 		ret_msg.then(
 				function(message)
 				{
+					// if(bool_retry !== undefined)
+						// console.log("con err, retry OK", bool_retry);
 					port_connected = true;
 					resolve();
 
@@ -17,9 +21,10 @@ async function connected(number_eventId)
 				},
 				function(err)
 				{
-					console.log("con err", err)
+					let rnd = Math.random();
+					// console.log("con err, retry", err, document.location, rnd);
 					setTimeout(function(){
-						connected(number_eventId);
+						connected(number_eventId, rnd);
 					}, Math.random()*500);
 				}
 			);
@@ -62,13 +67,13 @@ function emit()
 		ret_msg.then(
 			function(message)
 			{
-				console.log("emmision callback", message)
+				// console.log("emmission callback", number_eventId, message)
 
 				got_message(message);
 			},
 			function(err)
 			{
-				console.log("emmision err", err)
+				console.log("emmission err", err)
 			}
 		);
 	}

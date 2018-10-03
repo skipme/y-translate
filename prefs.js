@@ -33,7 +33,7 @@ var preferences =
 		else
 			that.hosts = data;
 
-		console.log("hp", that.hosts);
+		// console.log("hp", that.hosts);
 		
 		data = await that.readAsync("HostPrefs");
 
@@ -42,7 +42,7 @@ var preferences =
 		else
 			that.host_params = data;
 
-		console.log("hp", that.host_params)
+		// console.log("hp", that.host_params)
 
 		data = await that.readAsync("ExtensionPrefs");
 
@@ -51,7 +51,7 @@ var preferences =
 		
 		this.extension_prefs = data;
 
-		console.log("ep", that.extension_prefs);
+		// console.log("ep", that.extension_prefs);
 		
 		function_callback();
 	},

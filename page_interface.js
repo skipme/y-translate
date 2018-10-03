@@ -1,5 +1,6 @@
 
 (function(){
+	var CONST = window.clone(window.CONST);
 	var divId = 'ytranslate02';
 	var divCId = '#' + divId;
 	var $divCId = null;
