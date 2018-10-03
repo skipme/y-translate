@@ -12,6 +12,10 @@ preferences.read_model(function()
 	parameters.LNG_TO = prefs.translateLNG_PREFER_TO;
 	parameters.LNG_TO_ALT = prefs.translateLNG_PREFER_TO_ALT;
 });
+
+var localisedWidget;
+var localisedLangs;
+
 var currentTab;
 
 var book_url_tabId = {};
@@ -90,7 +94,7 @@ function communication_gate(object_message, sender, sendResponse)
           	{	
           		props___.page_lng = lng___;
           		preferences.setHostPrefs_temp(url___, props___);
-          		book_url_tabId[url___].prefs = props___;
+          		book_url_tabId[url___].prefs.page_lng = lng___;
           	}
 		break;
 		case CONST.ACTION_B_scoped:
@@ -108,12 +112,17 @@ function communication_gate(object_message, sender, sendResponse)
 		break;
 		// widget dont have fixed port hahdle so we can only answer to it
 		case CONST.ACTION_B_BEEPW:
-			sendResponse({action: CONST.ACTION_W_locLangs, args: [getLocalisedLangs()]});
+			if(localisedLangs === undefined)
+				localisedLangs = getLocalisedLangs();
+			sendResponse({action: CONST.ACTION_W_locLangs, args: [localisedLangs]});
 		break;
 		case CONST.ACTION_B_locData:
 				var	url___ = getHostName(currentTab.url, true);
+				if(localisedWidget === undefined)
+					localisedWidget = localiseArray(object_message.args[1]);
 				sendResponse([
-				{action: CONST.ACTION_W_locStrings, args: [localiseArray(object_message.args[1])]},
+				//{action: CONST.ACTION_W_locStrings, args: [localiseArray(object_message.args[1])]},
+				{action: CONST.ACTION_W_locStrings, args: [localisedWidget]},
 				{action: CONST.ACTION_W_state, args: [{isin: preferences.isHostIn(url___), url: url___, prefs: preferences.getHostPrefs(url___)}]}
 				]);
 		break;

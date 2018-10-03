@@ -93,7 +93,7 @@ var preferences =
 	{
 		var set_pocket = {};
 		set_pocket[string_key] = object_data;
-		console.log("set_pocket", set_pocket)
+		// console.log("set_pocket", set_pocket)
 		let settingItem = browser.storage.local.set(set_pocket);// fire and forget
 		settingItem.then(function(){console.log("write ok", string_key)}, this.storage_error_callback);
 	},

@@ -27,8 +27,6 @@ window.CONST =
 	ACTION_W_state: 20,
 	ACTION_W_locStrings: 21,
 	ACTION_W_locLangs: 22,
-	ACTION_W_state: 23,
-
 };
 window.clone = function clone(o) {
  if(!o || 'object' !== typeof o)  {
