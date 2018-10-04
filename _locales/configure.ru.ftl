@@ -18,3 +18,4 @@ Slow =  Медленно
 Fast = Быстро
 Super_Fast = Супер быстро
 msec = мсек
+saved_mark = сохранено...
