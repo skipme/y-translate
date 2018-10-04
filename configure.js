@@ -899,7 +899,9 @@
 
     		get view_howfast()
     		{
-    			return ($scope.props.baloonLagMs*0.001).toFixed(1)+"sec. "+$scope.howFast();
+    			return ($scope.props.baloonLagMs*0.001).toFixed(1)+
+    			loc_messages[4] + // "sec. "
+    			".  " + $scope.howFast();
     		}
     	};
 
@@ -935,19 +937,26 @@
 
 			p2ptranslate.c.delay("$showin", function()
 				{
-					document.getElementById("projects").style.display = "block"
+					document.getElementById("projects").style.display = "block";
+
 				},100);
     	}
+    	var loc_messages = ["So_Slow", "Slow", "Fast", "Super_Fast", "msec"];
+    	document.l10n.formatValues.apply(document.l10n, loc_messages.map((e)=>[e]))
+				.then((v)=>{
+					loc_messages = v;
+					// console.log(v)
+				});
     	$scope.howFast = function()
     	{
     		if($scope.props.baloonLagMs - 1800 > 0)
-    			return 'So Slow';
+    			return loc_messages[0]; //'So Slow';
     		if($scope.props.baloonLagMs - 1400 > 0)
-    			return 'Slow';
+    			return loc_messages[1]; //'Slow';
     		if($scope.props.baloonLagMs - 1000 > 0)
-    			return 'Fast';
+    			return loc_messages[2]; //'Fast';
     		
-    		return 'Super Fast';
+    		return loc_messages[3];// 'Super Fast';
     	}
     	$scope.slideBehaviour = function(){
 			single.procedureLoading(true);

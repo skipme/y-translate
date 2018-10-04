@@ -2,12 +2,17 @@
 <html>
 <head>
 	<meta http-equiv=Content-Type content="text/html;charset=UTF-8">
+
+	<meta name="defaultLanguage" content="en-US">
+	<meta name="availableLanguages" content="ru, en-US">
+	<link rel="localization" href="_locales/configure.{locale}.ftl">
+
 	<link rel="stylesheet" href="css/makeit.css">
 	<link rel="stylesheet" href="css/configure.css">
     	<link rel="stylesheet" href="css/symbols.css">
     	<link rel="stylesheet" href="css/animation.css">
     	<link rel="icon" type="image/png" href="icon.png" />
-    	<title>y-Translate configuration</title>
+    	<title data-l10n-id="title">y-Translate configuration</title>
 </head>
 <body ng-app="p2ptm" data-framework="angularjs" ng-controller="mainCtrl" >
 	<!-- top  acl projects/edit/new... -->
@@ -15,7 +20,7 @@
 	<nav id="toppanel" class="ctrl">
 		<div class="navcontrols" style="text-align: center">
 			
-				 <img src="icon.png" width="16px" height="16px"></img>&nbsp;y-Translate configuration
+				 <img src="icon.png" width="16px" height="16px"></img>&nbsp;<span data-l10n-id="title">y-Translate configuration</span>
 			
 		</div>
 	</nav>
@@ -29,49 +34,49 @@
 		<section>
 
 			<div ng-click="slideProjects()" class="primary">
-			<i class="icon-language" style="float:left"></i>Behaviour</div>
+			<i class="icon-language" style="float:left"></i><span data-l10n-id="Behaviour">Behaviour</span></div>
 
 			<div ng-click="slideProjects()" class="primary">
-			<i class="icon-flight" style="float:left"></i>Services</div>
+			<i class="icon-flight" style="float:left"></i><span  data-l10n-id="Services">Services</span></div>
 
 			<div ng-click="slideProjects()" class="primary">
-			<i class="icon-code" style="float:left"></i>Appearance</div>
+			<i class="icon-code" style="float:left"></i><span data-l10n-id="Appearance">Appearance</span></div>
 
 			<div ng-click="slideProjects()" class="primary">
-			<i class="icon-lightbulb" style="float:left"></i>About</div>
+			<i class="icon-lightbulb" style="float:left"></i><span data-l10n-id="About">About</span></div>
 		</section>
 		<footer class="footer"></footer>
 	</aside>
 	<!-- on/off [src|dst] -->
 	<section class="workzone">
-		<section id="projects" class="workzonepanel slidepanel slidepon" style="display: none;">
+		<section id="projects" class="workzonepanel slidepanel slidepon" style="display: block;">
 
 			<div class="scontent">
-				<h1>Behaviour settings&nbsp;<span class="hinfo" id="behSaved">saved...</span></h1>
+				<h1 data-l10n-id="Behaviour_settings">Behaviour settings&nbsp;<span class="hinfo" id="behSaved">saved...</span></h1>
 				<div id="switch-project">
 						<form>
 <!-- 							<div class="fc-group">
 								<label><input type="checkbox" disabled="disabled" checked="checked" />&nbsp;OWNER</label>
 							</div> -->
 							<div class="fc-group">
-								 <label>Initiation of translation: </label>
+								 <label data-l10n-id="Initiation_of_translation">Initiation of translation: </label>
 								<div class="fc-controls">
 								<br />
-									<p class="ptoggle">By Mouse: 
+									<p class="ptoggle"><span data-l10n-id="By_Mouse">By Mouse:</span> 
 									   <a toggleme ng-model="settings.activateModeMouse" id="toggle-empty" class="toggle" ><i class="icon-toggle-off"></i></a></p>
-									<p class="ptoggle">By Keyboard: 
+									<p class="ptoggle"><span data-l10n-id="By_Keyboard">By Keyboard:</span> 
 									   <a toggleme ng-model="settings.activateModeKey" id="toggle-empty" class="toggle" ><i class="icon-toggle-off"></i></a></p>
 								</div>
 							</div>
 							<div class="fc-group" ng-class="{hidden: settings.activateModeMouse}">
-								<label>Set Keyboard key: </label>
+								<label data-l10n-id="Keyboard_key_set">Set Keyboard key: </label>
 								<div class="fc-controls">
 		
 								<input type="text" inpkey ng-model="settings.translateEvtKeybrd" style="font-family: sans;font-size: 15pt;" />
 								</div>
 							</div>
 							<div class="fc-group" ng-class="{hidden: settings.activateModeKey}">
-								<label>Mouse Hover Delay: <!-- ({{(props.baloonLagMs*0.001).toFixed(1)+"sec. "+howFast() }}) -->
+								<label><span data-l10n-id="Mouse_Hover_Delay">Mouse Hover Delay:</span> <!-- ({{(props.baloonLagMs*0.001).toFixed(1)+"sec. "+howFast() }}) -->
 									<span ng-model="settings.view_howfast"></span></label>
 								<div class="fc-controls">
 
@@ -80,26 +85,26 @@
 							</div>
 							<div class="fc-group fc-hl"></div>
 							<div class="fc-group">
-								<label>dist language</label><br/>
+								<label data-l10n-id="dist_language">dist language</label><br/>
 								<div class="fc-controls">
 								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO" style="width:100pt" ang-select="langs.list"></select>
 								</div>
 							</div>
 
 							<div class="fc-group">
-								<label>alt language</label><br/>
+								<label data-l10n-id="alt_language">alt language</label><br/>
 								<div class="fc-controls">
 								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO_ALT" style="width:100pt" ang-select="langs.list"></select>
 								</div>
 							</div>
 							<div class="fc-group fc-hl"></div>
 							<div class="fc-group">
-								<label>Allow to copy result  to clipboard: - NOT SUPPORTED RIGHT NOW -</label>
+								<label data-l10n-id="allow_to_copy_cpbrd">Allow to copy result  to clipboard: - NOT SUPPORTED RIGHT NOW -</label>
 
 									  <a toggleme ng-model="settings.clipboarcpy" id="toggle-clipboard" class="toggle" ><i class="icon-toggle-off"></i></a>
 							</div>
 							<div class="fc-group" ng-class="{hidden: !settings.clipboarcpy}">
-							<label>Clipboard copy keyboard key:</label>	
+							<label data-l10n-id="Clipboard_copy_keyboard_key">Clipboard copy keyboard key:</label>	
 						   		<div class="fc-controls">
 						   			
 									<input type="text" inpkey ng-model="settings.clipboardcpykey" style="font-family: sans;font-size: 15pt;" id="toggle-clipboard-key"  />
@@ -116,6 +121,8 @@
 
 	<!-- ui deps -->
 	<!-- <script type="text/javascript" src="js/angular.min.js"></script> -->
+	<!-- loc -->
+	<script type="text/javascript" src="l20n.min.js"></script>
 
 	<script type="text/javascript" src="holder.js"></script>
 	<script type="text/javascript" src="langlist.js"></script>
