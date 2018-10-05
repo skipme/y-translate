@@ -15,6 +15,7 @@
 .fc-group .toggle
 {
     cursor: pointer;
+    float: right;
 }
 .fc-group
 {

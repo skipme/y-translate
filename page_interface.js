@@ -149,9 +149,48 @@
 			showWithAll(sentence, sentence, "error: request timed out");
 		}, 10000);// wait 10sec for translation
 	}
+	function setClipboardAsCommand(text)
+	{
+		var node_translated = $id('y-t-translated');
+		var prev_ranges = null;
+
+		var selection = window.getSelection();
+		if(selection.rangeCount > 0) // save
+		{
+			prev_ranges = [];
+			for (var i = 0; i < selection.rangeCount; i++) 
+			{
+				prev_ranges.push(selection.getRangeAt(i));
+			}
+		}
+
+    	var prev_text = node_translated.textContent;
+    	node_translated.textContent = text;
+
+        var range = document.createRange();
+        range.selectNodeContents(node_translated);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        
+        // now copy
+        var copyed_bool = document.execCommand("copy");
+        // console.log("y-translate: clipboard copy as command:", copyed_bool, text);
+
+        node_translated.textContent = prev_text;
+
+    	if(prev_ranges !== undefined && prev_ranges.length > 0) // restore
+		{
+			selection.removeAllRanges();
+			for (var i = 0; i < prev_ranges.length; i++) 
+			{
+				selection.addRange(prev_ranges[i]);
+			}
+		}
+	}
 	function setClipboard(text)
 	{
-		emit(CONST.ACTION_B_setClipboard, text);
+		// emit(CONST.ACTION_B_setClipboard, text);
+		setClipboardAsCommand(text);
 	}
 
 	function requestTranslate(sentence, lag)
