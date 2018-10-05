@@ -17,5 +17,5 @@ So_Slow = So Slow
 Slow =  Slow
 Fast = Fast
 Super_Fast = Super Fast
-msec = ms
+msec = sec
 saved_mark = saved...

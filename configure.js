@@ -394,6 +394,7 @@
 			let that = this;
 			p2ptranslate.c.delay("$render", function()
 				{
+					console.log("rerender")
 					for (var i = 0; i < that.binded_elements.length; i++) 
 					{
 						// console.log(that.binded_elements[i])
@@ -431,7 +432,7 @@
 						}
 					}
 				}
-				, 100);
+				, 200, /*bool_dont_remove*/true);
 		},
 		// p2ptm.controller('mainCtrl', ['$scope', '$http', function mainCtrl($scope, $location) {
 		controller: function(name, args)
@@ -483,6 +484,9 @@
 					this.checkNgInElement(element);
 					if(elements[i].nodeName === "INPUT" || elements[i].nodeName === "SELECT")
 					{
+						if(elements[i].nodeName === "INPUT" && elements[i].type === "range")
+							elements[i].addEventListener("input", elements[i].$ng.$change);
+
 						elements[i].addEventListener("change", elements[i].$ng.$change);
 					}
 					this.binded_elements.push(elements[i]);

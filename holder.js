@@ -145,7 +145,7 @@ var p2ptranslate = { }; // app holder
 	    		// we can't clearTimeout but it's - ok 
 	    	// }
 	    },
-	    delay: function(cname, callback, ms){// ms: [-1, 0...n], -1 means clear delay
+	    delay: function(cname, callback, ms, bool_dont_remove){// ms: [-1, 0...n], -1 means clear delay
 	    	
 	    	if(!callback || this.checkFunction(callback) || 
 	    		// this.isNullOrWhiteSpace(callback.name))
@@ -157,6 +157,8 @@ var p2ptranslate = { }; // app holder
 	    	var dobj = dL[fooname];
 	    	if(dobj !== undefined && dobj !== null && !dobj.invoked)
 	    	{
+	    		if(bool_dont_remove)
+	    			return;// do nothing...
 	    		var intId = dobj.intervalId;
 	    		clearTimeout(intId);
 	    	}
