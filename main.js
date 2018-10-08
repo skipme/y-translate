@@ -82,7 +82,10 @@ function communication_gate(object_message, sender, sendResponse)
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_BEEP});
 
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Prefs, args: [preferences.getPrefs()]});
-			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Urls, args: [{ajax_loader: browser.runtime.getURL("ajax-loader.gif")}]});
+			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_Urls, args: [{
+					ajax_loader: browser.runtime.getURL("ajax-loader.gif"),
+					clipboard: browser.runtime.getURL("to copy.svg")
+				}]});
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_enable, args: []});
 		break;
 		case CONST.ACTION_B_page_lng:

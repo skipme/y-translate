@@ -8,7 +8,11 @@
 	  "name": "Vitaliy",
 	  "url": "https://github.com/skipme"
 	},
-
+	"applications": {
+	  "gecko": {
+	    "strict_min_version": "60.0"
+	  }
+	},
 	"default_locale": "en",
 	"icons": {
 	  "32": "icon.png",

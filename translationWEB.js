@@ -76,8 +76,10 @@ var translator = {};
 			if(this.providerStep === CONST.PS_DETECT_TRANSLATE || this.providerStep === CONST.PS_TRANSLATE)
 			{
 				var that = this;
-				//if(srcMost)
-				//	that.useSrcLang = srcMost;
+
+				// if(srcMost !== undefined && srcMost !== null)
+				// 	that.useSrcLang = srcMost;
+
 				if(this.providerStep === CONST.PS_DETECT_TRANSLATE && srcMost === this.useDistLang)
 				{
 					console.log("TR REV AS", srcMost)

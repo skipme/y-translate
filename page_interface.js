@@ -9,7 +9,7 @@
 
 	var mode = {disabled: false, off: false, isShow: true, isSelection: false, isUserWait: false, isTranslating: false, timeShowed: Date(), sentence: '', translated: '', Loader: false, textSelected: false};
 	var preferences = {mouseTrigger: true};
-	var urls = {ajax_loader: ''};
+	var urls = {ajax_loader: '', clipboard: ''};
 	var context = {originalShowed: '',mx: 0,my: 0, cx: 0,cy: 0, timerUserWait: 0, lastKD: Date(), element: undefined, dWidth: 0, dHeight: 0, waitServerAnswerTimer: 0, timerCursorLeavedW: 0};
 	var BodyObserver;
 
@@ -95,7 +95,7 @@
 		});
 		// self.port.on("Urls", function(_urls){
 		dispatch(CONST.ACTION_F_Urls, function(_urls){
-			urls=_urls;
+			urls = _urls;
 		});
 		// self.port.on("showTranslated", function(original, forTranslate, trans, also1, also2, lSrc, lDst){
 		dispatch(CONST.ACTION_F_showTranslated, function(original, forTranslate, trans, also1, also2, lSrc, lDst){	
@@ -152,7 +152,7 @@
 	function setClipboardAsCommand(text)
 	{
 		var node_translated = $id('y-t-translated');
-		var prev_ranges = null;
+		var prev_ranges = undefined;
 
 		var selection = window.getSelection();
 		if(selection.rangeCount > 0) // save
@@ -174,6 +174,8 @@
         
         // now copy
         var copyed_bool = document.execCommand("copy");
+        if(copyed_bool)
+        	showClipboard();
         // console.log("y-translate: clipboard copy as command:", copyed_bool, text);
 
         node_translated.textContent = prev_text;
@@ -255,6 +257,7 @@
 			msgd.appendChild($create("a", 'y-t-translated', ['y-t-dtext'], {"font-weight": "bold", color:"#223355", "font-style": "normal", "font-size": "inherit", "text-decoration":'none', "border":"medium none"}));
 			msgd.appendChild($create("span", 'y-t-also1', ['y-t-dtext'], {color:"#76797C", display : 'none', "font-style": "italic", "font-size": "10.5pt", "text-decoration":'none', "border":"medium none"}));
 			msgd.appendChild($create("span", 'y-t-also2', ['y-t-dtext'], {color:"#76797C", display : 'none', "font-style": "italic", "font-size": "10.5pt", "text-decoration":'none', "border":"medium none"}));
+			msgd.appendChild($create("img", 'y-t-clipboard', null, {display:'block', height: 'auto', position: 'absolute', opacity: 0.0, visibility: 'hidden', width: '4px', transition: 'width 0.8s cubic-bezier(.68,-0.55,.27,1.55), opacity 0.8s ease-out'}));
 			document.body.appendChild(msgd);
 
 			mode.isShow = true;
@@ -268,6 +271,7 @@
 	{
 		if(onOff){
 			$id('y-t-loader').setAttribute('src', urls.ajax_loader);
+				$id('y-t-clipboard').setAttribute('src', urls.clipboard);
 			$id('y-t-loader').style.removeProperty('display');
 			$iterate($class('y-t-dtext', $divCId), function(e){e.style.setProperty("display", "none");});
 			$divCId.style.setProperty("top", (context.my)+"px");
@@ -281,11 +285,25 @@
 		}
 		mode.Loader = onOff;
 	}
+	function showClipboard()
+	{
+		var cpbrd_ = $id('y-t-clipboard');
+		cpbrd_.style.setProperty("visibility", "visible");
+		cpbrd_.style.setProperty("width", "64px");
+		cpbrd_.style.setProperty("opacity", "1.0");
+		setTimeout(() =>{
+			cpbrd_.style.setProperty("width", "4px");
+			cpbrd_.style.setProperty("opacity", "0.0");
+			setTimeout(() =>{
+				cpbrd_.style.setProperty("visibility", "hidden");
+			}, 800);
+		}, 800);
+	}
 	function showBox()
 	{
-		setupView(context.my, context.mx).style.setProperty("visibility", "visible");
+		var view = setupView(context.my, context.mx);
 		$divCId.style.setProperty("opacity", 1);
-
+		setTimeout(() => view.style.setProperty("visibility", "visible"), 200);
 		mode.isShow = true;
 	}
 	function hideBox()
@@ -293,8 +311,9 @@
 		if(!mode.isShow)
 			return;
 
-		$divCId.style.setProperty("visibility", "hidden");
+		
 		$divCId.style.setProperty("opacity", 0);
+		setTimeout(() => $divCId.style.setProperty("visibility", "hidden"), 200);
 
 		mode.isSelection = false;
 		mode.isShow = false;

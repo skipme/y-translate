@@ -943,7 +943,7 @@
 				{
 					document.getElementById("projects").style.display = "block";
 
-				},100);
+				},300);
     	}
     	var loc_messages = ["So_Slow", "Slow", "Fast", "Super_Fast", "msec"];
     	document.l10n.formatValues.apply(document.l10n, loc_messages.map((e)=>[e]))
