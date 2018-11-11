@@ -76,8 +76,8 @@ function communication_gate(object_message, sender, sendResponse)
 		case CONST.ACTION_B_BEEP:
 
 			// console.log("action beep from main.js "+sender.tab.id);
-
-			set_url_tabid(getHostName(sender.tab.url, true), sender.tab.id);
+			var url___ = getHostName(sender.tab.url, true);
+			set_url_tabid(url___, sender.tab.id);
 
 			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_BEEP});
 
@@ -86,7 +86,12 @@ function communication_gate(object_message, sender, sendResponse)
 					ajax_loader: browser.runtime.getURL("ajax-loader.gif"),
 					clipboard: browser.runtime.getURL("to copy.svg")
 				}]});
-			browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_enable, args: []});
+
+			var isin = preferences.isHostIn(url___);
+			if(!isin)
+			{
+				browser.tabs.sendMessage(sender.tab.id, {action: CONST.ACTION_F_enable, args: []});
+			}
 		break;
 		case CONST.ACTION_B_page_lng:
 			// console.log("action page_lng from main.js "+sender.tab.id);

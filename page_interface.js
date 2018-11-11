@@ -301,9 +301,8 @@
 	}
 	function showBox()
 	{
-		var view = setupView(context.my, context.mx);
-		$divCId.style.setProperty("opacity", 1);
-		setTimeout(() => view.style.setProperty("visibility", "visible"), 200);
+		setupView(context.my, context.mx).style.setProperty("visibility", "visible");
+		setTimeout(() => $divCId.style.setProperty("opacity", 1), 0);
 		mode.isShow = true;
 	}
 	function hideBox()
