@@ -433,9 +433,11 @@
 			return;
 		else context.lastKD = kd;
 
-		var key = e.ctrlKey ? "ctrl":(e.shiftKey ? "shift":(e.altKey ? "alt":""));
-      	var kc = String.fromCharCode(e.keyCode).toLowerCase();
-      	kc = ((e.keyCode>18) ? (key.length===0 ? kc :(key+"+"+ kc )):key);
+		//var key = e.ctrlKey ? "ctrl":(e.shiftKey ? "shift":(e.altKey ? "alt":""));
+      	//var kc = String.fromCharCode(e.keyCode).toLowerCase();
+      	//kc = ((e.keyCode>18) ? (key.length===0 ? kc :(key+"+"+ kc )):key);
+      	var key = (e.ctrlKey?"ctrl+":"") + (e.shiftKey?"shift+":"") + (e.altKey?"alt+":"");
+      	var kc = (e.keyCode>18||e.keyCode<16) ? (key.length===0 ? e.code :(key + e.code )):key.substr(0, key.length-1);
 
 		if(mode.isShow 
 			//&& e.which === 67 

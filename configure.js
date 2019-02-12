@@ -763,11 +763,13 @@
 					var ielem = elm[0];
 					
 					elm.on('keydown', function(e) {
-						// console.log(e)
+						 console.log(e)
 				        scope.$apply(function() {
-				          var key = e.ctrlKey ? "ctrl":(e.shiftKey ? "shift":(e.altKey ? "alt":""));
-				          var kc = String.fromCharCode(e.keyCode).toLowerCase();
-				          ctrl.$setViewValue((e.keyCode>18) ? (key.length===0 ? kc :(key+"+"+ kc )):key);
+				          //var key = e.ctrlKey ? "ctrl":(e.shiftKey ? "shift":(e.altKey ? "alt":""));
+				          //var kc = String.fromCharCode(e.keyCode).toLowerCase();
+				          //ctrl.$setViewValue((e.keyCode>18) ? (key.length===0 ? kc :(key+"+"+ kc )):key);
+				          var key = (e.ctrlKey?"ctrl+":"") + (e.shiftKey?"shift+":"") + (e.altKey?"alt+":"");
+				          ctrl.$setViewValue((e.keyCode>18||e.keyCode<16) ? (key.length===0 ? e.code :(key + e.code )):key.substr(0, key.length-1));
 				          ctrl.$render();
 				        });
 				        e.preventDefault();return false;
@@ -779,34 +781,35 @@
 				}
 		};
 	});
-	p2ptm.directive('inpkey', function(){
-		return {				
-			restrict: 'A',
-				require: 'ngModel',
-				link: function(scope, elm, attrs, ctrl) {
-					if(!ctrl)
-					{
-						return;
-					}
-					var ielem = elm[0];
+	// p2ptm.directive('inpkey', function(){
+	// 	return {				
+	// 		restrict: 'A',
+	// 			require: 'ngModel',
+	// 			link: function(scope, elm, attrs, ctrl) {
+	// 				if(!ctrl)
+	// 				{
+	// 					return;
+	// 				}
+	// 				var ielem = elm[0];
 					
-					elm.on('keydown', function(e) {
-						// console.log(e)
-				        scope.$apply(function() {
-				          var key = e.ctrlKey ? "ctrl":(e.shiftKey ? "shift":(e.altKey ? "alt":""));
-				          var kc = String.fromCharCode(e.keyCode).toLowerCase();
-				          ctrl.$setViewValue((e.keyCode>18) ? (key.length===0 ? kc :(key+"+"+ kc )):key);
-				          ctrl.$render();
-				        });
-				        e.preventDefault();return false;
-				     });
-					// model -> view
-					ctrl.$render = function() {
-						ielem.value = '"'+ctrl.$viewValue+'"';
-					};
-				}
-		};
-	});
+	// 				elm.on('keydown', function(e) {
+	// 					// console.log(e)
+	// 			        scope.$apply(function() {
+	// 			          //var key = e.ctrlKey ? "ctrl":(e.shiftKey ? "shift":(e.altKey ? "alt":""));
+	// 			          //var kc = String.fromCharCode(e.keyCode).toLowerCase();
+	// 			          //ctrl.$setViewValue((e.keyCode>18) ? (key.length===0 ? kc :(key+"+"+ kc )):key);
+	// 			          ctrl.$setViewValue(e.code);
+	// 			          ctrl.$render();
+	// 			        });
+	// 			        e.preventDefault();return false;
+	// 			     });
+	// 				// model -> view
+	// 				ctrl.$render = function() {
+	// 					ielem.value = '"'+ctrl.$viewValue+'"';
+	// 				};
+	// 			}
+	// 	};
+	// });
 	// p2ptm.filter('lang', function() {
 	//     return function(input) {
 	//     	var dict = "en";
