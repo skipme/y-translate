@@ -659,17 +659,21 @@
 				restrict: 'A',//attribute
 				require: 'ngModel',
 				link: function(scope, elm, attrs, ctrl) {
-					if(!ctrl || !elm.hasClass("toggle"))
+					
+					let ielem = elm[0].getElementsByTagName("i")[0];
+					if(!ctrl || !elm.hasClass("toggle") || !ielem)
 					{
 						return;
 					}
-					var ielem = elm[0].getElementsByTagName("i")[0];
-					elm.on('click', function() {
-				        scope.$apply(function() {
+					
+					elm[0].parentElement.addEventListener('click', function(){ // parent paragraph 
+					 	scope.$apply(function() {
 				          ctrl.$setViewValue(!ctrl.$viewValue);
 				          ctrl.$render();
 				        });
-				     });
+
+					});
+
 					// model -> view
 					ctrl.$render = function() {
 						if(ctrl.$viewValue)
@@ -763,7 +767,7 @@
 					var ielem = elm[0];
 					
 					elm.on('keydown', function(e) {
-						 console.log(e)
+						//console.log(e)
 				        scope.$apply(function() {
 				          //var key = e.ctrlKey ? "ctrl":(e.shiftKey ? "shift":(e.altKey ? "alt":""));
 				          //var kc = String.fromCharCode(e.keyCode).toLowerCase();

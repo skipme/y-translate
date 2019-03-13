@@ -2,9 +2,11 @@
 	"use strict";
 	p2ptranslate.langs = {
 		list: [//"en","ru","auto",
-		"af","sq","ar","hy","az","eu","be","bn","bs","bg","ca","ceb","ny","zh-CN","hr","cs","da","nl","en","eo","et","tl","fi","fr","gl","ka","de","el","gu","ht","ha","iw","hi","hmn","hu","is","ig","id","ga","it","ja","jw","kn","kk","km","ko","lo","la","lv","lt","mk","mg","ms","ml","mt","mi","mr","mn","my","ne","no","fa","pl","pt","pa","ro","ru","sr","st","si","sk","sl","so","es","su","sw","sv","tg","ta","te","th","tr",
-		// "uk",
-		"ur","uz","vi","cy","yi","yo","zu"],
+		"af","sq","ar","hy","az","eu","be","bn","bs","bg","ca","ceb","ny","zh-CN","hr","cs","da",
+		"nl","en","eo","et","tl","fi","fr","gl","ka","de","el","gu","ht","ha","iw","hi","hmn","hu",
+		"is","ig","id","ga","it","ja","jw","kn","kk","km","ko","lo","la","lv","lt","mk","mg","ms",
+		"ml","mt","mi","mr","mn","my","ne","no","fa","pl","pt","pa","ro","ru","sr","st","si","sk","sl",
+		"so","es","su","sw","sv","tg","ta","te","th","tr","uk", "ur","uz","vi","cy","yi","yo","zu"],
 		en: [{
 		    "id": "af",
 		    "name": "Afrikaans"
@@ -251,9 +253,9 @@
 		}, {
 		    "id": "tr",
 		    "name": "Turkish"
-		// }, {
-		//     "id": "uk",
-		//     "name": "Ukrainian"
+		}, {
+		    "id": "uk",
+		    "name": "Ukrainian"
 		}, {
 		    "id": "ur",
 		    "name": "Urdu"

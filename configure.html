@@ -59,7 +59,7 @@
 								<label><input type="checkbox" disabled="disabled" checked="checked" />&nbsp;OWNER</label>
 							</div> -->
 							<div class="fc-group">
-								 <label data-l10n-id="Initiation_of_translation">Initiation of translation: </label>
+								 <span class="bullet_section"></span><label data-l10n-id="Initiation_of_translation">Initiation of translation: </label>
 								<div class="fc-controls">
 								<br />
 									<p class="ptoggle"><span data-l10n-id="By_Mouse">By Mouse:</span> 
@@ -68,14 +68,14 @@
 									   <a toggleme ng-model="settings.activateModeKey" id="toggle-empty" class="toggle" ><i class="icon-toggle-off"></i></a></p>
 								</div>
 							</div>
-							<div class="fc-group" ng-class="{hidden: settings.activateModeMouse}">
+							<div class="fc-group" ng-class="{hidden: settings.activateModeMouse}" style="padding-left: 64px;">
 								<label data-l10n-id="Keyboard_key_set">Set Keyboard key: </label>
 								<div class="fc-controls">
 		
 								<input type="text" inpkey ng-model="settings.translateEvtKeybrd" style="font-family: sans;font-size: 15pt;" />
 								</div>
 							</div>
-							<div class="fc-group" ng-class="{hidden: settings.activateModeKey}">
+							<div class="fc-group" ng-class="{hidden: settings.activateModeKey}" style="padding-left: 64px;">
 								<label><span data-l10n-id="Mouse_Hover_Delay">Mouse Hover Delay:</span> <!-- ({{(props.baloonLagMs*0.001).toFixed(1)+"sec. "+howFast() }}) -->
 									<span ng-model="settings.view_howfast"></span></label>
 								<div class="fc-controls">
@@ -85,25 +85,25 @@
 							</div>
 							<div class="fc-group fc-hl"></div>
 							<div class="fc-group">
-								<label data-l10n-id="dist_language">dist language</label><br/>
+								<span class="bullet_section"></span><label data-l10n-id="dist_language">dist language</label><br/>
 								<div class="fc-controls">
 								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO" style="width:100pt" ang-select="langs.list"></select>
 								</div>
 							</div>
 
 							<div class="fc-group">
-								<label data-l10n-id="alt_language">alt language</label><br/>
+								<span class="bullet_section"></span><label data-l10n-id="alt_language">alt language</label><br/>
 								<div class="fc-controls">
 								<select ng-options="item as (item | lang) for item in langs.list" ng-model="settings.translateLNG_PREFER_TO_ALT" style="width:100pt" ang-select="langs.list"></select>
 								</div>
 							</div>
 							<div class="fc-group fc-hl"></div>
 							<div class="fc-group">
-								<label data-l10n-id="allow_to_copy_cpbrd">Allow to copy result  to clipboard: - NOT SUPPORTED RIGHT NOW -</label>
+								<span class="bullet_section"></span><label data-l10n-id="allow_to_copy_cpbrd">Allow to copy result  to clipboard:</label>
 
 									  <a toggleme ng-model="settings.clipboarcpy" id="toggle-clipboard" class="toggle" ><i class="icon-toggle-off"></i></a>
 							</div>
-							<div class="fc-group" ng-class="{hidden: !settings.clipboarcpy}">
+							<div class="fc-group" ng-class="{hidden: !settings.clipboarcpy}" style="padding-left: 64px;">
 							<label data-l10n-id="Clipboard_copy_keyboard_key">Clipboard copy keyboard key:</label>	
 						   		<div class="fc-controls">
 						   			

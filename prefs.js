@@ -8,7 +8,7 @@ var _def_prefs_ = {
 
 		baloonLagMs: 700,
 		// sp.prefs.yandexKey// 6
-		cpyClipboardKey: "c"
+		cpyClipboardKey: "KeyC"
 	};
 
 var preferences = 

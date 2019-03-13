@@ -1,16 +1,15 @@
 #leftslash{
-    width: 140px !important;
-    top: 44px;
+    width: 52px !important;
+    top: 64px;
 }
 #toppanel
 {
-
     left: 0px !important;
-    height: 44px;
+    /*height: 44px;*/
 }
 .workzone
 {
-    left: 140px;
+    left: 160px;
 }
 .fc-group .toggle
 {
@@ -23,7 +22,7 @@
     clear:both;
     float:left;
     padding: 0;
-    margin: 00px 0px 00px 50px;
+    margin: 00px 0px 00px 25px;
     height: auto; 
     -moz-transition: color 0.2s ease-out;
 }
@@ -38,6 +37,7 @@
     -moz-user-select: none;
     color: gray;
 }
+
 .fc-controls{
     display: block;
     left: 160px;
@@ -49,6 +49,7 @@
     /*float:left;*/
     padding: 0;
     margin: 1pt;
+    cursor: pointer;
 }
 .ptoggle-active
 {
@@ -60,13 +61,13 @@
 }
 *
 {
-    font-family: PT Sans, verdana;
-    font-size: 11pt;
+    font-family: PT Sans, Verdana;
+    font-size: 14pt;
 }
 .hinfo
 {
     font-size: 10pt;
-    color: blue;
+    color: orange;
  
     opacity: 0;
     /*visibility: hidden;*/
@@ -81,8 +82,8 @@
 }
 @keyframes blink {
   50% {
-    color: rgb(200,100,200);
-    font-size: 11pt;
+    color: rgb(150,50,150);
+    /*font-size: 11pt;*/
     /*text-decoration: underline;*/
   }
 }
