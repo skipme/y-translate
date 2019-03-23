@@ -18,7 +18,10 @@
 	  "32": "icon.png",
 	  "64": "icon64.png"
 	},
-
+	"options_ui": {
+	  "page": "configure.html",
+	  "open_in_tab": true
+	},
 	"background": {
     	"page": "main.html"
   	},

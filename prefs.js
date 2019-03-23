@@ -1,6 +1,6 @@
 var _def_prefs_ = {
 		translateEvtType: "h", 
-		translateEvtKeybrd: "ctrl", 
+		translateEvtKeybrd: "ctrl+KeyX", 
 		cpyClipboardEvtKeybrd: "ignore", 
 
 		translateLNG_PREFER_TO: "ru", 
@@ -8,7 +8,7 @@ var _def_prefs_ = {
 
 		baloonLagMs: 700,
 		// sp.prefs.yandexKey// 6
-		cpyClipboardKey: "KeyC"
+		cpyClipboardKey: "ctrl+KeyC"
 	};
 
 var preferences = 
@@ -48,6 +48,12 @@ var preferences =
 
 		if(data === undefined || data._ytranslate_ === undefined)
 			data = _def_prefs_;
+		else if(data._ytranslate_ === "0.4")// events changed
+		{
+			data.translateEvtType = _def_prefs_.translateEvtType;
+			data.cpyClipboardKey = _def_prefs_.cpyClipboardKey;
+			data.translateEvtKeybrd = _def_prefs_.translateEvtKeybrd;
+		}
 		
 		this.extension_prefs = data;
 
@@ -142,7 +148,7 @@ var preferences =
 	},
 	setPrefs: function(prefs)
 	{
-		prefs._ytranslate_ = "0.4";
+		prefs._ytranslate_ = "0.4.12";
 		this.extension_prefs = prefs;
 		this.write("ExtensionPrefs", this.extension_prefs);
 	}
