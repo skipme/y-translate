@@ -2,11 +2,12 @@
 // (function(){
 
 	// TODO: http option in settings instead https
-	var request_url = 'https://translate.google.com/translate_a/t';
+	var request_url = 'https://translate.google.com/translate_a/single';
 
 	function gt_request_word(word, languageFrom, languageTo){
 		var http_cont = {
-			 client: "dict-chrome-ex",
+			client: "gtx",
+			//client: "dict-chrome-ex",
 			//client: "y-translate",
 			text : word,
 			hl : browser.i18n.getUILanguage(), // "en"
@@ -19,7 +20,9 @@
 			trs : 1,
 			ssel : 0,
 			tsel : 0,
-			sc : 1 
+			sc : 1,
+			dj : 1,
+			dt : ["t", "bd"]
 		};
 
 		return {url:request_url, content:http_cont};
@@ -29,6 +32,11 @@
 	{
 		//{source:'',trans:'',pos:'',terms:[''],entrys:[{word:'',reversed:[''],score}]}
 		var populated = {debug:response, source:'', trans:'', pos:[], terms:[], entrys:[], src: response.src};
+
+		if(response.results && !response.sentences)
+		{
+			response = response.results[0];
+		}
 
 		//return populated;
 		for (var i = 0; i < response.sentences.length; i++) 

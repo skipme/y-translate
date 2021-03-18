@@ -4,7 +4,14 @@
         var arrx = [];
         for (var k in data) 
         {
-            arrx.push(k + '=' + data[k]);
+            if(Array.isArray(data[k]))
+            {
+                for(var j = 0; j < data[k].length; j++) arrx.push(k + '=' + data[k][j]);
+            }
+            else
+            {
+                arrx.push(k + '=' + data[k]);
+            }
         }
         return url+arrx.join("&");
 }
